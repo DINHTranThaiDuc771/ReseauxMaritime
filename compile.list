@@ -1,0 +1,5 @@
+./Model/Move.java
+./Model/Navire.java
+./Model/Model.java
+
+-d bin
