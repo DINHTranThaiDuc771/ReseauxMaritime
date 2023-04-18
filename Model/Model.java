@@ -46,7 +46,7 @@ public class Model {
         if (moveArrete.getDepart().equals(date)  ) currentPosition = moveArrete.getFrom_id();
         if (moveArrete.getDepart().equals(date) && moveArrete.getArrival().equals(date))
         {
-            tabPosition[0] =  currentPosition;
+            tabPosition[0] =  moveArrete.getFrom_id();
             tabPosition[1] = moveArrete.getTo_id();
             return tabPosition;
         }
