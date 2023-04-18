@@ -15,6 +15,13 @@ public class Date implements Comparable<Date>{
         if (this.day()   > date.day()   ) return true;
         return false;
     }
+    public boolean isBefore (Date date)
+    {
+        if (this.year()  < date.year()  ) return true;
+        if (this.month() < date.month() ) return true;
+        if (this.day()   < date.day()   ) return true;
+        return false;
+    }
     public int year(){
         return Integer.parseInt(this.value.substring(6,10));
     }

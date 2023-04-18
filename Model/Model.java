@@ -35,21 +35,25 @@ public class Model {
         }
         for (Move move : lstMoveNavire)
         {
-            moveArrete = move;
             if (move.getArrival().isAfter(date)) // If two date are equal, isAfter returns false
             {
+                moveArrete = move;
                 break;
             }
-            currentPosition = moveArrete.getTo_id();
+            currentPosition = move.getTo_id();
+            moveArrete = move;
         }
-        if (date.isAfter(moveArrete.getDepart()) ) currentPosition = 0;//en route
-        if (moveArrete.getDepart().equals(date)  ) currentPosition = moveArrete.getFrom_id();
+        if (date.isAfter(moveArrete.getDepart()) && date.isBefore(moveArrete.getArrival())) currentPosition = 0;//en route
+        if (moveArrete.getDepart().equals(date)  )                                          currentPosition = moveArrete.getFrom_id();
+        
+        // If le navire départ et arrive dans la même journée
         if (moveArrete.getDepart().equals(date) && moveArrete.getArrival().equals(date))
         {
-            tabPosition[0] =  moveArrete.getFrom_id();
-            tabPosition[1] = moveArrete.getTo_id();
+            tabPosition[0] =    moveArrete.getFrom_id();
+            tabPosition[1] =    moveArrete.getTo_id();
             return tabPosition;
         }
+        
         tabPosition[0] = currentPosition;
         tabPosition[1] = -2; // Non défini
         return tabPosition;
