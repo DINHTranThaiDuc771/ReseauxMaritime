@@ -1,13 +1,13 @@
 package Model;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.ListIterator;
 import java.util.Scanner;
+import java.util.TreeMap;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -19,6 +19,42 @@ public class Model {
         setNavire           = new HashSet<>();
         mapHistoireNavire   = new HashMap<Navire,LinkedList<Move>>();
     }
+
+    public int[] positionNavire(Navire navire,String dateString)
+    {
+        int[]            tabPosition        = new int[2];
+        int              currentPosition    = 0;
+        Move             moveArrete         = null;
+        Date             date               = new Date(dateString);
+        LinkedList<Move> lstMoveNavire      = mapHistoireNavire.get(navire);
+
+        if (lstMoveNavire.getFirst().getDepart().isAfter(date))
+        {
+            int[] array = {-1,-1};
+            return array; //la date est avant l'historique
+        }
+        for (Move move : lstMoveNavire)
+        {
+            moveArrete = move;
+            if (move.getArrival().isAfter(date)) // If two date are equal, isAfter returns false
+            {
+                break;
+            }
+            currentPosition = moveArrete.getTo_id();
+        }
+        if (date.isAfter(moveArrete.getDepart()) ) currentPosition = 0;//en route
+        if (moveArrete.getDepart().equals(date)  ) currentPosition = moveArrete.getFrom_id();
+        if (moveArrete.getDepart().equals(date) && moveArrete.getArrival().equals(date))
+        {
+            tabPosition[0] =  currentPosition;
+            tabPosition[1] = moveArrete.getTo_id();
+            return tabPosition;
+        }
+        tabPosition[0] = currentPosition;
+        tabPosition[1] = -2; // Non défini
+        return tabPosition;
+    }
+
     public void coherentModel(){
         for (Navire navire : mapHistoireNavire.keySet())
         {
@@ -80,10 +116,27 @@ public class Model {
         }
         scanner.close();
     }
+
+    /*
+     * Affichage
+     * 
+     *
+     */
+    public void afficherPostionDesNavires(String date)
+    {
+        TreeMap<Navire, LinkedList<Move>> sorted            = new TreeMap<>(this.mapHistoireNavire); // sort hashMap
+
+        for (Navire nav : sorted.keySet())
+        {
+            System.out.println(String.format("%-20s","Navire "+nav)+" :"+String.format("%-20s",Arrays.toString(this.positionNavire(nav, date))));
+        }
+    }
     
     public static void main(String[] args) throws IOException {
-        Model               model       = new Model();
+        Model model = new Model();
         model.chargerModel("testMoves.csv");
+
+        System.out.println("---------------------------------------Test l'ensemble Navires-----------------------------------------------");
         ArrayList<Navire> listNavire = new ArrayList<Navire>(model.setNavire);
         Collections.sort(listNavire, new Comparator<Navire>() {
             @Override
@@ -93,7 +146,11 @@ public class Model {
         });
         System.out.println(listNavire);
         System.out.println(model.setNavire.add (new Navire(37516)));
-        model.mapHistoireNavire.forEach(
+        
+        System.out.println("---------------------------------------Test Map Histoire-----------------------------------------------");
+
+        TreeMap<Navire, LinkedList<Move>> sorted            = new TreeMap<>(model.mapHistoireNavire); // sort hashMap
+        sorted.forEach(
             (key,value) -> {
                 System.out.println("Navire: "+ key);
                 for (Move move : value) {
@@ -101,17 +158,19 @@ public class Model {
                 }
             }
         );
-
-        System.out.println("--------------------------Test Cohérent-----------------------------------------------");
-
+        System.out.println("---------------------------------------Test Cohérent-----------------------------------------------");
         model.coherentModel();
-        model.mapHistoireNavire.forEach(
+        sorted            = new TreeMap<>(model.mapHistoireNavire); // sort hashMap
+        sorted.forEach(
             (key,value) -> {
                 System.out.println("Navire: "+ key);
                 for (Move move : value) {
                     System.out.println(move);
                 }
             }
-        );        
+        );
+        System.out.println("---------------------------------------Test Position-----------------------------------------------");
+        System.out.println("Date 05/03/1977 00:00");
+        model.afficherPostionDesNavires("05/03/1977 00:00");
     }
 }
