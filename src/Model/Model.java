@@ -94,10 +94,10 @@ public class Model {
         FileInputStream     inputStream = new FileInputStream(fichier);
         Scanner             scanner     = new Scanner(inputStream,"UTF-8");
         // Ignore the first line
-        scanner.nextLine(); 
         while (scanner.hasNextLine()){
             String line = scanner.nextLine();
             String dataOfLine[] = line.split(";");
+            if (dataOfLine[2].equals("year")) continue; //There are 'HEADERS' inside the allMoves.csv
             /*
             dataOfLine[4] = departure : date de départ du port (from_id)
             dataOfLine[5] = arrival : date d'arrivée au port (to_id)
@@ -139,7 +139,28 @@ public class Model {
     public static void main(String[] args) throws IOException {
         Model model = new Model();
         model.chargerModel(args[0]);
+        model.coherentModel();
+        TreeMap<Navire, LinkedList<Move>> sorted            = new TreeMap<>(model.mapHistoireNavire); // sort hashMap
+        sorted.forEach(
+            (key,value) -> {
+                try {
+                    FileWriter writer = new FileWriter("dataHistorique./nav"+key+".txt",true);
+                    writer.write("Navire: "+ key+"\n");
 
+                    for (Move move : value) {
+                        writer.write(move.toString()+"\n");
+
+                    }
+                    writer.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        );
+
+    }
+    public static void testTerminal(Model model) {
         System.out.println("---------------------------------------Test l'ensemble Navires-----------------------------------------------");
         ArrayList<Navire> listNavire = new ArrayList<Navire>(model.setNavire);
         Collections.sort(listNavire, new Comparator<Navire>() {

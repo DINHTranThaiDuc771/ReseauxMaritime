@@ -1,6 +1,7 @@
 allMoves.csv
 allMoves*.csv
 /data/*
+/dataHistorique
 /commons-csv-1.10.0
 /lib
 /bin
