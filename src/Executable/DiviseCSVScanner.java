@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class DiviseCSVScanner {
     public static void main(String[] args) throws IOException {
-        String              fichier     = "./testData/testMoves8000.csv";
+        String              fichier     = args[0];
         FileInputStream     inputStream = new FileInputStream(fichier);
         Scanner             scanner     = new Scanner(inputStream,"UTF-8");
 

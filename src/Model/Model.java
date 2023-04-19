@@ -138,7 +138,7 @@ public class Model {
     
     public static void main(String[] args) throws IOException {
         Model model = new Model();
-        model.chargerModel("testData/testMoves8000.csv");
+        model.chargerModel(args[0]);
 
         System.out.println("---------------------------------------Test l'ensemble Navires-----------------------------------------------");
         ArrayList<Navire> listNavire = new ArrayList<Navire>(model.setNavire);
