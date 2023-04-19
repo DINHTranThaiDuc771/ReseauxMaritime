@@ -1,0 +1,37 @@
+move_pkid;move_id;year;month;departure;arrival;from_id;to_id;from_name;to_name;from_type;to_type;vessel_id;vessel_name;vessel_type;dwt;time
+464388;;1977;3;01/03/1977 00:00;01/03/1977 00:00;4303;5295;Incheon;Busan;1;1;37516;Mayaguez;fully cellular containership;8651;0
+190044;;1977;3;01/03/1977 00:00;01/03/1977 00:00;4289;1501;Leghorn;Port de Bouc;1;1;12666;Virginia VII;fully cellular containership;1725;0
+666026;;1977;3;01/03/1977 00:00;01/03/1977 00:00;5295;1504;Busan;Kaohsiung;1;1;57460;Banga Birol;fully cellular containership;12529;0
+382306;;1977;3;01/03/1977 00:00;01/03/1977 00:00;2993;1697;Hamburg;Bremerhaven;1;1;30654;MSC Claudia;fully cellular containership;35737;0
+257721;;1977;3;01/03/1977 00:00;01/03/1977 00:00;2561;854;Hampton Roads;Baltimore;1;1;17501;Right River;fully cellular containership;31830;0
+99567;;1977;3;01/03/1977 00:00;01/03/1977 00:00;3164;4593;Hong Kong;Keelung;1;1;4371;Flamingo;fully cellular containership;7876;0
+507013;;1977;3;01/03/1977 00:00;01/03/1977 00:00;2151;1927;Kobe;Moji;1;1;43021;Wing Lee No.1;fully cellular containership;5659;0
+47777;;1977;3;01/03/1977 00:00;01/03/1977 00:00;1697;830;Bremerhaven;Rotterdam;1;1;416;Afoundria;fully cellular containership;6982;0
+736404;;1977;3;01/03/1977 00:00;01/03/1977 00:00;941;3592;Algeciras;Naples;1;1;65317;Warrior;fully cellular containership;6953;0
+71925;;1977;3;01/03/1977 00:00;01/03/1977 00:00;1503;4700;Charleston;Jacksonville;1;1;2330;Anchorage;fully cellular containership;8852;0
+13438025;;1986;1;01/01/1986 00:00;01/01/1986 00:00;2241;4752;Poti;Ravenna;1;1;165414;Conta T.;fully cellular containership;9141;0
+12720300;;1986;1;01/01/1986 00:00;01/01/1986 00:00;4593;1504;Keelung;Kaohsiung;1;1;152374;Chun Lee;fully cellular containership;10680;0
+7759744;;1986;1;01/01/1986 00:00;01/01/1986 00:00;5757;2445;Penang;Jakarta;1;1;24177;Gi Huat;fully cellular containership;5436;0
+10857024;;1986;1;01/01/1986 00:00;01/01/1986 00:00;3983;2151;Dalian;Kobe;1;1;107704;Notos;fully cellular containership;6271;0
+6936641;;1986;1;01/01/1986 00:00;01/01/1986 00:00;576;938;Antwerp;Europoort;1;1;6642;Feeder 4;fully cellular containership;4625;0
+11128674;;1986;1;01/01/1986 00:00;01/01/1986 00:00;3595;5554;Alexandria(EGY);Ashdod;1;1;113047;Miriam Borchard;fully cellular containership;7002;0
+12656534;;1986;1;01/01/1986 00:00;01/01/1986 00:00;115;5757;Port Klang;Penang;1;1;151532;New Haihung;fully cellular containership;8309;0
+10124273;;1986;1;01/01/1986 00:00;01/01/1986 00:00;5196;4067;Manila;Brisbane;1;1;75725;Khudozhnik Zhukov;fully cellular containership;22968;0
+13830385;;1986;1;01/01/1986 00:00;01/01/1986 00:00;2992;4747;Abidjan;Dakar;1;1;173262;Lim;fully cellular containership;12167;0
+9735854;;1986;1;01/01/1986 00:00;01/01/1986 00:00;1504;4593;Kaohsiung;Keelung;1;1;67731;Jade;fully cellular containership;6270;0
+10774199;;1986;1;02/01/1986 00:00;02/01/1986 00:00;1781;5490;Cape Town;Walvis Bay;1;1;106717;Gulf Cooperation;fully cellular containership;9083;0
+9272809;;1986;1;02/01/1986 00:00;02/01/1986 00:00;306;3164;Huangpu;Hong Kong;1;1;57471;Meghna;fully cellular containership;12396;0
+11346884;;1986;1;02/01/1986 00:00;02/01/1986 00:00;3106;4345;Trieste;Koper;1;1;115603;Hrvatska;fully cellular containership;19455;0
+12701967;;1986;1;02/01/1986 00:00;02/01/1986 00:00;2248;830;Felixstowe;Rotterdam;1;1;152114;Sea Master;fully cellular containership;7826;0
+7544310;;1986;1;02/01/1986 00:00;02/01/1986 00:00;143;5075;Helsinki;Hamina;1;1;20522;Jin Fu Xing 6;fully cellular containership;8123;0
+6965166;;1986;1;02/01/1986 00:00;02/01/1986 00:00;1369;4572;San Juan(PRI);New York;1;1;7146;Borinquen;fully cellular containership;17249;0
+11259178;;1986;1;02/01/1986 00:00;02/01/1986 00:00;1160;253;Ellesmere Port;Belfast;1;1;114371;Erka Sun;fully cellular containership;4352;0
+13737603;;1986;1;02/01/1986 00:00;02/01/1986 00:00;830;576;Rotterdam;Antwerp;1;1;172063;Iason;fully cellular containership;43289;0
+10807912;;1986;1;02/01/1986 00:00;02/01/1986 00:00;830;2993;Rotterdam;Hamburg;1;1;107323;Maxi;fully cellular containership;40849;0
+464388;;1977;3;01/03/1977 00:00;01/03/1977 00:00;4303;5295;Incheon;Busan;1;1;37516;Mayaguez;fully cellular containership;8651;0
+190044;;1977;3;01/03/1977 00:00;01/03/1977 00:00;4289;1501;Leghorn;Port de Bouc;1;1;12666;Virginia VII;fully cellular containership;1725;0
+666026;;1977;3;01/03/1977 00:00;01/03/1977 00:00;5295;1504;Busan;Kaohsiung;1;1;57460;Banga Birol;fully cellular containership;12529;0
+382306;;1977;3;01/03/1977 00:00;01/03/1977 00:00;2993;1697;Hamburg;Bremerhaven;1;1;30654;MSC Claudia;fully cellular containership;35737;0
+257721;;1977;3;01/03/1977 00:00;01/03/1977 00:00;2561;854;Hampton Roads;Baltimore;1;1;17501;Right River;fully cellular containership;31830;0
+99567;;1977;3;01/03/1977 00:00;01/03/1977 00:00;3164;4593;Hong Kong;Keelung;1;1;4371;Flamingo;fully cellular containership;7876;0
+507013;;1977;3;01/03/1977 00:00;01/03/1977 00:00;2151;1927;Kobe;Moji;1;1;43021;Wing Lee No.1;fully cellular containership;5659;0

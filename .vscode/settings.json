@@ -1,0 +1,10 @@
+{
+    "java.project.sourcePaths": [
+        "Test",
+        "src"
+    ],
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar"
+    ],
+    "java.dependency.syncWithFolderExplorer": false
+}

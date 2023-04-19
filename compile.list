@@ -1,5 +1,6 @@
-./Model/Move.java
-./Model/Navire.java
-./Model/Model.java
-
+./src/Model/Move.java
+./src/Model/Navire.java
+./src/Model/Model.java
+./src/Model/Date.java
+./src/Executable/DiviseCSVScanner.java
 -d bin
