@@ -1,5 +1,5 @@
 package Model;
-public class Move {
+public class Move implements Comparable<Move>{
     private Date depart;
     private Date arrival;
     private int    from_id;
@@ -41,5 +41,17 @@ public class Move {
         if (previousMove.to_id == currentMove.from_id)
             return null;
         return new Move(previousMove.arrival, currentMove.depart, previousMove.to_id, currentMove.from_id);
+    }
+    @Override
+    public int compareTo(Move m) {
+        // System.out.println("Comparing " + this + " and " + m);
+        return this.depart.compareTo(m.depart);
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Move)) return false;
+        Move other = (Move) obj;
+        return this.depart.equals(other.depart);
     }
 }

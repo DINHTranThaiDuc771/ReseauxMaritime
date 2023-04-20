@@ -27,7 +27,7 @@ public class Model {
         Move             moveArrete         = null;
         Date             date               = new Date(dateString);
         LinkedList<Move> lstMoveNavire      = mapHistoireNavire.get(navire);
-
+        
         if (lstMoveNavire.getFirst().getDepart().isAfter(date))
         {
             int[] array = {-1,-1};
@@ -58,7 +58,15 @@ public class Model {
         tabPosition[1] = -2; // Non défini
         return tabPosition;
     }
+    private void sortMove ()
+    {
+        this.mapHistoireNavire.forEach((key,value)->
+        {
+            Collections.sort(value);
+        }
+        );
 
+    }
     public void coherentModel(){
         for (Navire navire : mapHistoireNavire.keySet())
         {
@@ -139,6 +147,7 @@ public class Model {
     public static void main(String[] args) throws IOException {
         Model model = new Model();
         model.chargerModel(args[0]);
+        model.sortMove(); //remember to sort before cohérer
         model.coherentModel();
         TreeMap<Navire, LinkedList<Move>> sorted            = new TreeMap<>(model.mapHistoireNavire); // sort hashMap
         sorted.forEach(
@@ -146,10 +155,8 @@ public class Model {
                 try {
                     FileWriter writer = new FileWriter("dataHistorique./nav"+key+".txt",true);
                     writer.write("Navire: "+ key+"\n");
-
                     for (Move move : value) {
                         writer.write(move.toString()+"\n");
-
                     }
                     writer.close();
                 } catch (IOException e) {
