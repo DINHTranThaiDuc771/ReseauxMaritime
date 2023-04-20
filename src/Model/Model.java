@@ -135,8 +135,10 @@ public class Model {
                 this.mapHistoireNavire  .put(navireTraite,new LinkedList<Move>());
                 Move moveTraite = new Move(dataOfLine[4], dataOfLine[5], Integer.parseInt(dataOfLine[6]), Integer.parseInt(dataOfLine[7]) );
                 this.mapHistoireNavire   .get(navireTraite).add(moveTraite);
-                this.mapListDate          .get(navireTraite).add(new Date(dataOfLine[4]));
-                this.mapListDate          .get(navireTraite).add(new Date(dataOfLine[5]));
+                Date dateDepart = new Date(dataOfLine[4]);
+                Date dateArrival= new Date(dataOfLine[5]);
+                if (!(this.mapListDate.get(navireTraite).contains(dateDepart)))this.mapListDate.get(navireTraite).add(dateDepart);
+                if (!(this.mapListDate.get(navireTraite).contains(dateArrival)))this.mapListDate.get(navireTraite).add(dateArrival);
 
             }
             else // if navire Traité is already in the set
@@ -145,8 +147,8 @@ public class Model {
                 this.mapHistoireNavire.get(navireTraite).add(moveTraite);
                 Date dateDepart = new Date(dataOfLine[4]);
                 Date dateArrival= new Date(dataOfLine[5]);
-                this.mapListDate.get(navireTraite).add(dateDepart);
-                this.mapListDate.get(navireTraite).add(dateArrival);
+                if (!(this.mapListDate.get(navireTraite).contains(dateDepart)))this.mapListDate.get(navireTraite).add(dateDepart);
+                if (!(this.mapListDate.get(navireTraite).contains(dateArrival)))this.mapListDate.get(navireTraite).add(dateArrival);
 
             }
         }

@@ -67,7 +67,7 @@ public class Date implements Comparable<Date>{
         if (!(o instanceof Date))
             return false;
         Date d = (Date) o;
-        return this.compareTo(d) == 0;
+        return this.compareTo(d) == 0 || this.value.equals(d.value);
     }
 
     public static void main(String[] args) {
