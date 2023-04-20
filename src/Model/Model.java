@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Scanner;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import javax.swing.text.Position;
 
@@ -111,6 +112,45 @@ public class Model {
             }
         }
     }
+    /*
+     * return Navire-> liste des port dans une date
+     */
+    public HashMap<Navire,int[]> getNavireAvecPorte(String date)
+    {
+        TreeMap<Navire, LinkedList<Move>> sorted            = new TreeMap<>(this.mapHistoireNavire); // sort hashMap
+        HashMap<Navire,int[]> mapNavireAvecPorte = new  HashMap<Navire,int[]>();
+        for (Navire nav : sorted.keySet())
+        {
+            mapNavireAvecPorte.put(nav, positionNavire(nav, date));
+        }
+        return mapNavireAvecPorte;
+        
+    }
+    /*
+     * return Porte -> List des navire dans une date
+     * Cet HashMap sert à construire un graph d'une date
+     * 
+     */
+    public HashMap<Integer, ArrayList<Navire>> getPorteAvecNavire(String date) {
+        HashMap<Integer, ArrayList<Navire>> mapPorteAvecNavire = new HashMap<>();
+        HashMap<Navire, int[]> mapNavireAvecPorte = this.getNavireAvecPorte(date);
+    
+        for (Entry<Navire, int[]> entry : mapNavireAvecPorte.entrySet()) {
+            Navire navire = entry.getKey();
+            int porteA = entry.getValue()[0];
+            int porteB = entry.getValue()[1];
+            /*
+             * computeIfAbsent(porteA, k -> new ArrayList<Navire>())
+             * if absente porteA, then create a new key porteA and associate it with a new Array
+             * If present porteA, it simply return the value of key porteA
+             */
+            mapPorteAvecNavire.computeIfAbsent(porteA, k -> new ArrayList<Navire>()).add(navire);
+            mapPorteAvecNavire.computeIfAbsent(porteB, k -> new ArrayList<Navire>()).add(navire);
+
+        }
+    
+        return mapPorteAvecNavire;
+    }
     public void chargerModel (String path) throws IOException
     {
         String              fichier     = path;
@@ -164,7 +204,6 @@ public class Model {
     /*
      * Affichage
      * 
-     *
      */
     public void afficherPostionDesNavires(String date)
     {
@@ -200,7 +239,7 @@ public class Model {
 
             }
         );
-
+        
     }
     public static void testTerminal(Model model) {
         System.out.println("---------------------------------------Test l'ensemble Navires-----------------------------------------------");
