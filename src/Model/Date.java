@@ -6,7 +6,10 @@ import java.time.format.DateTimeParseException;
 
 public class Date implements Comparable<Date>{
     private String value;
-
+    public Date (Date date)
+    {
+        this.value = date.value;
+    }
     // Format days 01/03/1977 00:00
     public Date(String value) {
         // Need to transform value into dd/mm/yyyy hh:mm before this.value = value
@@ -64,7 +67,7 @@ public class Date implements Comparable<Date>{
         if (!(o instanceof Date))
             return false;
         Date d = (Date) o;
-        return this.year() == d.year() && this.month()==d.month() && this.day()==d.day();
+        return this.compareTo(d) == 0;
     }
 
     public static void main(String[] args) {
@@ -84,5 +87,9 @@ public class Date implements Comparable<Date>{
         LocalDate thisDate = LocalDate.of(this.year(), this.month(), this.day());
         LocalDate otherDate = LocalDate.of(date.year(), date.month(), date.day());
         return thisDate.compareTo(otherDate);
+    }
+    @Override
+    public int hashCode() {
+        return this.value.hashCode();
     }
 }
