@@ -17,10 +17,12 @@ public class Model {
     private HashSet<Navire> setNavire ;
     private HashMap<Navire,LinkedList<Move>> mapHistoireNavire;
     private HashMap<Navire,ArrayList<Date>> mapListDate;//un hashmap qui stock des navires et leurs dates départ et arrival, 
+    private ArrayList<Date>               lstDateVsStep;
     public Model () {
         setNavire           = new HashSet<>();
         mapHistoireNavire   = new HashMap<Navire,LinkedList<Move>>();
         mapListDate         = new HashMap<Navire,ArrayList<Date>>();
+        lstDateVsStep       = new ArrayList<Date>();
     }
     public int[] positionNavire(Navire navire,Date date)
     {
@@ -149,12 +151,26 @@ public class Model {
     
         return mapPorteAvecNavire;
     }
-    public void chargerModel (String path) throws IOException
+    public void chargerListDateVsStep(String path) throws FileNotFoundException
     {
         String              fichier     = path;
         FileInputStream     inputStream = new FileInputStream(fichier);
         Scanner             scanner     = new Scanner(inputStream,"UTF-8");
-        // Ignore the first line
+        //Ignore the first line
+        scanner.nextLine();
+        while (scanner.hasNextLine())
+        {
+            String line = scanner.nextLine();
+            String dataOfLine[]=line.split(" ");
+            lstDateVsStep.add(new Date(dataOfLine[0]));
+        }
+    }
+    public void chargerModel (String path) throws IOException
+    {
+        System.out.println("Charing");
+        String              fichier     = path;
+        FileInputStream     inputStream = new FileInputStream(fichier);
+        Scanner             scanner     = new Scanner(inputStream,"UTF-8");
         while (scanner.hasNextLine()){
             String line = scanner.nextLine();
             String dataOfLine[] = line.split(";");
@@ -215,16 +231,25 @@ public class Model {
     
     public static void main(String[] args) throws IOException {
         Model model = new Model();
-        model.chargerModel(args[0]);
+        if (args.length > 0 ) model.chargerModel(args[0]);
+        else model.chargerModel("./testData/testMoves.csv");
         model.coherentModel();
+        model.chargerListDateVsStep("./tmp/dates_vs_step");
         TreeMap<Navire, LinkedList<Move>> sorted            = new TreeMap<>(model.mapHistoireNavire); // sort hashMap
         sorted.forEach(
             (key,value) -> {
                 try {
                     FileWriter writer = new FileWriter("dataHistorique./nav"+key+".txt",true);
+                    System.out.println("Writing files");
                     writer.write("Navire: "+ key+"\n");
                     for (Move move : value) {
-                        writer.write(move.toString()+"\n");
+                        String line;
+                        line   = String.format("%6d",model.lstDateVsStep.indexOf(move.getDepart()));
+                        line  += String.format("%6d",model.lstDateVsStep.indexOf(move.getArrival()));
+                        line  += String.format("%8d",move.getFrom_id());
+                        line  += String.format("%8d",move.getTo_id());
+                        line  += move.toString();
+                        writer.write(line+"\n");
                     }
                     writer.write("\nPosition de Navire "+ key+"\n");
                     for (Date date : model.mapListDate.get(key)){

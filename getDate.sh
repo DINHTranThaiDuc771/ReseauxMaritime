@@ -18,7 +18,7 @@ awk '{
 awk '{
     t = $1; $1 = $3; $2 = $2 ; $3 = t ; print;
 }' ./tmp/datesSort.csv| tr " " "/"> ./tmp/datesSort2.csv
-j=0
+j=-1
 for i in $(cat ./tmp/datesSort2.csv); do
     echo $i | tr "\n" " "
     echo $j #echo = print("[something]"+"\n")

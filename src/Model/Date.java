@@ -16,7 +16,7 @@ public class Date implements Comparable<Date>{
         // There are 3 format of data in database d/m/yyyy hh:mm and even m/d/yyyy hh:mm (1/13/1988
         // for exemple)
         // If value is already in dd/mm/yyyy, just valid it
-        String[] dateFormatsPossible = {"d/M/yyyy HH:mm", "M/d/yyyy HH:mm","d/M/yyyy H:mm", "M/d/yyyy H:mm","dd/MM/yyyy HH:mm" };
+        String[] dateFormatsPossible = {"d/M/yyyy HH:mm", "M/d/yyyy HH:mm","d/M/yyyy H:mm", "M/d/yyyy H:mm","dd/MM/yyyy HH:mm","dd/MM/yyyy","d/M/yyyy" };
         boolean isValidDateFormat = false;
 
         for (String dateFormat : dateFormatsPossible) {
