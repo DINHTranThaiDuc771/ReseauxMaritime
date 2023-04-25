@@ -5,3 +5,5 @@ allMoves*.csv
 /commons-csv-1.10.0
 /lib
 /bin
+/tmp/*
+/testBashAWK
