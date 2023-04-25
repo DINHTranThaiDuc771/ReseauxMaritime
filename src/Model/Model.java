@@ -167,7 +167,7 @@ public class Model {
     }
     public void chargerModel (String path) throws IOException
     {
-        System.out.println("Charing");
+        System.out.println("Charging");
         String              fichier     = path;
         FileInputStream     inputStream = new FileInputStream(fichier);
         Scanner             scanner     = new Scanner(inputStream,"UTF-8");
@@ -236,11 +236,12 @@ public class Model {
         model.coherentModel();
         model.chargerListDateVsStep("./tmp/dates_vs_step");
         TreeMap<Navire, LinkedList<Move>> sorted            = new TreeMap<>(model.mapHistoireNavire); // sort hashMap
+        System.out.println("Writing files");
+
         sorted.forEach(
             (key,value) -> {
                 try {
                     FileWriter writer = new FileWriter("dataHistorique./nav"+key+".txt",true);
-                    System.out.println("Writing files");
                     writer.write("Navire: "+ key+"\n");
                     for (Move move : value) {
                         String line;
