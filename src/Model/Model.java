@@ -17,12 +17,12 @@ public class Model {
     private HashSet<Navire> setNavire ;
     private HashMap<Navire,LinkedList<Move>> mapHistoireNavire;
     private HashMap<Navire,ArrayList<Date>> mapListDate;//un hashmap qui stock des navires et leurs dates départ et arrival, 
-    private ArrayList<Date>               lstDateVsStep;
+    private TreeMap<Date,Integer>           mapDateVsStep;
     public Model () {
         setNavire           = new HashSet<>();
         mapHistoireNavire   = new HashMap<Navire,LinkedList<Move>>();
         mapListDate         = new HashMap<Navire,ArrayList<Date>>();
-        lstDateVsStep       = new ArrayList<Date>();
+        mapDateVsStep       = new TreeMap<Date,Integer>();
     }
     public int[] positionNavire(Navire navire,Date date)
     {
@@ -156,14 +156,16 @@ public class Model {
         String              fichier     = path;
         FileInputStream     inputStream = new FileInputStream(fichier);
         Scanner             scanner     = new Scanner(inputStream,"UTF-8");
+        HashMap<Date,Integer> mapDateStepTemp = new HashMap<Date,Integer> ();
         //Ignore the first line
         scanner.nextLine();
         while (scanner.hasNextLine())
         {
             String line = scanner.nextLine();
             String dataOfLine[]=line.split(" ");
-            lstDateVsStep.add(new Date(dataOfLine[0]));
+            mapDateStepTemp.put(new Date(dataOfLine[0]), Integer.parseInt(dataOfLine[1]));
         }
+        this.mapDateVsStep = new TreeMap<Date,Integer>(mapDateStepTemp);
     }
     public void chargerModel (String path) throws IOException
     {
@@ -245,8 +247,8 @@ public class Model {
                     writer.write("Navire: "+ key+"\n");
                     for (Move move : value) {
                         String line;
-                        line   = String.format("%6d",model.lstDateVsStep.indexOf(move.getDepart()));
-                        line  += String.format("%6d",model.lstDateVsStep.indexOf(move.getArrival()));
+                        line   = String.format("%6d",model.mapDateVsStep.get(move.getDepart()));
+                        line  += String.format("%6d",model.mapDateVsStep.get(move.getArrival()));
                         line  += String.format("%8d",move.getFrom_id());
                         line  += String.format("%8d",move.getTo_id());
                         line  += move.toString();
