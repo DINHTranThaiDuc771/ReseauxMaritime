@@ -3,16 +3,16 @@ package Test;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.TreeMap;
 
 import Model.*;
-
 public class TestPorteAvecNavire {
     public static void main(String[] args) throws IOException {
         Model model = new Model();
         model.chargerModel("./testData/testMoves.csv");
-        HashMap<Integer,ArrayList<Navire>> mapPorteAvecNavire = model.getPorteAvecNavire("01/03/1977 00:00");
-        TreeMap<Integer,ArrayList<Navire>> sorted = new TreeMap<Integer,ArrayList<Navire>>(mapPorteAvecNavire);
+        HashMap<Integer,HashSet<Navire>> mapPorteAvecNavire = model.getPorteAvecNavire("07/03/1977 00:00");
+        TreeMap<Integer,HashSet<Navire>> sorted = new TreeMap<Integer,HashSet<Navire>>(mapPorteAvecNavire);
         sorted.forEach(
             (k,v) -> 
             {
