@@ -7,3 +7,4 @@ allMoves*.csv
 /bin
 /tmp/*
 /testBashAWK
+*.dgs
