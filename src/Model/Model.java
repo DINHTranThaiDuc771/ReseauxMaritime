@@ -18,11 +18,24 @@ public class Model {
     private HashMap<Navire,LinkedList<Move>> mapHistoireNavire;
     private HashMap<Navire,ArrayList<Date>> mapListDate;//un hashmap qui stock des navires et leurs dates départ et arrival, 
     private TreeMap<Date,Integer>           mapDateVsStep;
+    private ArrayList<Date>                 lstStepVsDate;
+    /*---------------------------------------------------------------------------------------- */
+    /*-------------------------------------Geter----------------------------------------------- */
+    /*---------------------------------------------------------------------------------------- */
+    
+    public ArrayList<Date> getLstStepVsDate() {
+        return lstStepVsDate;
+    }
+    public HashSet<Navire> getSetNavire() {
+        return setNavire;
+    }
+
     public Model () {
         setNavire           = new HashSet<>();
         mapHistoireNavire   = new HashMap<Navire,LinkedList<Move>>();
         mapListDate         = new HashMap<Navire,ArrayList<Date>>();
         mapDateVsStep       = new TreeMap<Date,Integer>();
+        lstStepVsDate       = new ArrayList<Date>();
     }
     public int[] positionNavire(Navire navire,Date date)
     {
@@ -58,7 +71,7 @@ public class Model {
         }
         
         tabPosition[0] = currentPosition;
-        tabPosition[1] = -2; // Non défini
+        tabPosition[1] = currentPosition;
         return tabPosition;
     }
     public int[] positionNavire(Navire navire,String dateString)
@@ -113,7 +126,7 @@ public class Model {
         }
     }
     /*
-     * return Navire-> liste des port dans une date
+     * return Navire-> liste des positions (ports) dans une date
      */
     public HashMap<Navire,int[]> getNavireAvecPorte(String date)
     {
@@ -131,8 +144,8 @@ public class Model {
      * Cet HashMap sert à construire un graph d'une date
      * 
      */
-    public HashMap<Integer, ArrayList<Navire>> getPorteAvecNavire(String date) {
-        HashMap<Integer, ArrayList<Navire>> mapPorteAvecNavire = new HashMap<>();
+    public HashMap<Integer, HashSet<Navire>> getPorteAvecNavire(String date) {
+        HashMap<Integer, HashSet<Navire>> mapPorteAvecNavire = new HashMap<>();
         HashMap<Navire, int[]> mapNavireAvecPorte = this.getNavireAvecPorte(date);
     
         for (Entry<Navire, int[]> entry : mapNavireAvecPorte.entrySet()) {
@@ -144,8 +157,8 @@ public class Model {
              * if absente porteA, then create a new key porteA and associate it with a new Array
              * If present porteA, it simply return the value of key porteA
              */
-            mapPorteAvecNavire.computeIfAbsent(porteA, k -> new ArrayList<Navire>()).add(navire);
-            mapPorteAvecNavire.computeIfAbsent(porteB, k -> new ArrayList<Navire>()).add(navire);
+            mapPorteAvecNavire.computeIfAbsent(porteA, k -> new HashSet<Navire>()).add(navire);
+            mapPorteAvecNavire.computeIfAbsent(porteB, k -> new HashSet<Navire>()).add(navire);
 
         }
     
@@ -164,6 +177,7 @@ public class Model {
             String line = scanner.nextLine();
             String dataOfLine[]=line.split(" ");
             mapDateStepTemp.put(new Date(dataOfLine[0]), Integer.parseInt(dataOfLine[1]));
+            lstStepVsDate.add(new Date(dataOfLine[0]));
         }
         this.mapDateVsStep = new TreeMap<Date,Integer>(mapDateStepTemp);
     }
