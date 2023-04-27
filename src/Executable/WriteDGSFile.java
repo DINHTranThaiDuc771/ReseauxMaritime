@@ -25,21 +25,22 @@ public class WriteDGSFile {
         writer.write("DGS004\n");
         writer.write("null 0 0\n");
         HashSet<EdgeNav> setEdge = new HashSet<EdgeNav>();
-        HashSet<Navire> setNavire = model.getSetNavire();
+        // HashSet<Navire> setNavire = model.getSetNavire();
+        HashSet<Navire> setNavire = new HashSet<Navire>();
         ArrayList<Date> lstDate = model.getLstStepVsDate();
         /*-------------------------------------- */
         /*-----------------Add Node------------- */
         /*-------------------------------------- */
         // an A
-        for (Navire nav : setNavire) {
-            // int[] positionNavire = model.positionNavire(nav, date);
-            // int[] arraysAvantHistorique = { -1, -1 };
-            // if (Arrays.equals(arraysAvantHistorique, positionNavire)) {
-            //     // TODO Isolate navires by changing color in green;
-            // }
-            String idnav = "n" + nav.toString();
-            writer.write("an " + idnav + "\n");
-        }
+        // for (Navire nav : setNavire) {
+        //     // int[] positionNavire = model.positionNavire(nav, date);
+        //     // int[] arraysAvantHistorique = { -1, -1 };
+        //     // if (Arrays.equals(arraysAvantHistorique, positionNavire)) {
+        //     //     // TODO Isolate navires by changing color in green;
+        //     // }
+        //     String idnav = "n" + nav.toString();
+        //     writer.write("an " + idnav + "\n");
+        // }
         int step = 0;
         for (Date date : lstDate) {
             // writerTest.write("st " + (step++) + "\n");
@@ -56,7 +57,16 @@ public class WriteDGSFile {
                 }
             }
             setEdge.clear();
-
+            /*-------------------------------------- */
+            /*----------- retirer les nodes---------*/
+            /*-------------------------------------- */
+            if (!(setNavire.isEmpty())) {
+                for (Navire navire : setNavire) {
+                    String idNavire = "n"+navire.toString();
+                    writer.write("dn " + idNavire+"\n");
+                }
+            }
+            setNavire.clear();
             /*-------------------------------------- */
             /*-----------------Add edges------------ */
             /*-------------------------------------- */
@@ -72,6 +82,11 @@ public class WriteDGSFile {
                         {
                             String idI = "n" + edgeTraite.getNavA().toString();
                             String idJ = "n" + edgeTraite.getNavB().toString();
+                            if (setNavire.add(edgeTraite.getNavA()))
+                                writer.write("an "+"n"+edgeTraite.getNavA()+"\n");
+                            if (setNavire.add(edgeTraite.getNavB()))
+                                writer.write("an "+"n"+edgeTraite.getNavB()+"\n");
+
                             writer.write("ae " + idI + idJ + " " + idI + " " + idJ + "\n");
                             // writerTest.write(edgeTraite+"\n");
                         }
