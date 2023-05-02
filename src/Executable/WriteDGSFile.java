@@ -78,6 +78,10 @@ public class WriteDGSFile {
                     ArrayList<Navire> lstNavire = new ArrayList<>(mapPorteNavire.get(port));
                     for (int j = i + 1; j < mapPorteNavire.get(port).size(); j++) {
                         EdgeNav edgeTraite = new EdgeNav(lstNavire.get(i), lstNavire.get(j));
+                        if (port == -1)
+                        {                        
+                            continue; //We don't add the node (navire) that historique avant la date
+                        }
                         if (setEdge.add(edgeTraite)) 
                         {
                             String idI = "n" + edgeTraite.getNavA().toString();
