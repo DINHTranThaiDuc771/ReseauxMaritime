@@ -25,7 +25,7 @@ if [ ! -f "$1" ]; then
 fi
 ./getDate.sh "$1"
 if [ -d "./dataHistorique/" ]; then
-    echo "Delete..."
+    echo "Reconstruct..."
     cd "./dataHistorique"
     rm -f *.txt
     cd ..
