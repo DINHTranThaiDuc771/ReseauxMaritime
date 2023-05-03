@@ -8,7 +8,7 @@ import org.graphstream.graph.implementations.*;
 import org.graphstream.stream.file.FileSource;
 import org.graphstream.stream.file.FileSourceDGS;
 
-public class gsBoilerplate {
+public class RunDGSFile {
 	public static void main(String args[]) throws IOException, InterruptedException {
 		System.setProperty("org.graphstream.ui", "swing");
 		

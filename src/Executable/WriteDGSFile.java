@@ -38,7 +38,6 @@ public class WriteDGSFile {
             /*----------- Construire setEdgeNew-------*/
             /*-------------------------------------- */
 
-            System.out.println("Construire setEdgeNew");
             HashSet<EdgeNav> setEdgeNew = new HashSet<EdgeNav>();
             HashMap<Integer, HashSet<Navire>> mapPorteAvecNavire = model.getPorteAvecNavire(date.toString());
             for (Integer port : mapPorteAvecNavire.keySet()) {
@@ -68,11 +67,9 @@ public class WriteDGSFile {
                     writer.write("de " + idI + idJ + "\n");
                 }
             }
-            System.out.println("Finish Constructing setEdgeNew");
             /*-------------------------------------- */
             /*----------- Construire setNavire-------*/
             /*-------------------------------------- */
-            System.out.println("Construire setNavire");
 
             HashMap<Navire, int[]> mapNavireVsPorte = model.getNavireAvecPorte(date.toString());
             int[] avantHistorique = { -1, -1 };
@@ -100,7 +97,6 @@ public class WriteDGSFile {
                     continue;
                 }                
             }
-            System.out.println("Finish Constructing setNavire");
             /*-------------------------------------- */
             /*----------- add Edge-----------------*/
             /*-------------------------------------- */
