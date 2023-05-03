@@ -37,13 +37,25 @@ public class Model {
         mapDateVsStep       = new TreeMap<Date,Integer>();
         lstStepVsDate       = new ArrayList<Date>();
     }
+    /*
+     * Possible Output
+     * {-1,-1} -> la date est avant l'historique
+     * {-2,-2} -> la date est apres l'historique
+     * { a, a} -> le navire est à la porte a
+     * { a, b} -> le navire est à la porte b dans la même journée
+     * { 0, 0} -> le naivre est en route (null part)
+     */
     public int[] positionNavire(Navire navire,Date date)
     {
         int[]            tabPosition        = new int[2];
         int              currentPosition    = 0;
         Move             moveArrete         = null;
         LinkedList<Move> lstMoveNavire      = mapHistoireNavire.get(navire);
-        
+        if (lstMoveNavire.getLast().getArrival().isBefore(date))
+        {
+            int[] array = {-2,-2};
+            return array; //la date est apres l'historique            
+        }
         if (lstMoveNavire.getFirst().getDepart().isAfter(date))
         {
             int[] array = {-1,-1};
