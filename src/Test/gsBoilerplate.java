@@ -1,6 +1,7 @@
 package Test;
 
 import java.io.IOException;
+import java.util.Scanner;
 
 import org.graphstream.graph.*;
 import org.graphstream.graph.implementations.*;
@@ -19,8 +20,9 @@ public class gsBoilerplate {
 		
 		while (source.nextStep())
 		{
-			Thread.sleep(1000);
-		
+			// Scanner  scanner = new Scanner(System.in);
+			// while (scanner.nextLine()==null);
+			Thread.sleep (1000);
 		}
 		source.end();
 		System.out.println("finish constructing");
