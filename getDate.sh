@@ -6,7 +6,7 @@ echo "writing datesdepart.csv"
 cat $1 | cut -d ";" -f 5 | cut -d " " -f 1 |tr "/" " " >./tmp/datesdepart
 
 echo "writing dates.csv"
-awk ' { t = $1; $1 = $3; $2 = $2 ; $3 = t ; print; } ' ./tmp/datesdepart | tr " " "_" | sort | uniq >./tmp/dates
+awk ' { t = $1; $1 = $3; $2 = $2 ; $3 = t ; print; } ' ./tmp/datesdepart | tr " " "_" | sort -t '_' -n -k 1,3 | uniq >./tmp/dates
 
 echo "writing dates2.csv"
 cat ./tmp/dates | tr "_" " " >./tmp/dates2
@@ -26,7 +26,8 @@ awk '{
         date=$3" "$1" "$2;
     }
     print date;
-}' ./tmp/datesOrdonnees | sort > ./tmp/datesSort.csv
+}' ./tmp/datesOrdonnees | sort -t ' ' -k 1n -k 2n -k 3n  > ./tmp/datesSort.csv 
+#specify that the sort should be done first on field 1, then field 2, and finally on field 3
 
 echo "writing datesSort2.csv"
 awk '{
