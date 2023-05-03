@@ -1,3 +1,4 @@
+move_pkid;move_id;year;month;departure;arrival;from_id;to_id;from_name;to_name;from_type;to_type;vessel_id;vessel_name;vessel_type;dwt;time
 18240294;55090488;2016;11;6/30/2016 14:27;11/2/2016 7:29;821;1917;Piraeus;Leixoes;1;1;303060;Judith Borchard;fully cellular containership;15312;124.7097222
 18924516;55043933;2016;11;6/30/2016 17:00;11/2/2016 10:03;5774;1652;Pontianak;Pekanbaru;1;1;11823023;;fully cellular containership;8180;124.7104167
 18837911;55101682;2016;11;7/1/2016 0:49;11/2/2016 18:02;1949;3756;Kiel;Kronshtadt;1;1;9134314;;fully cellular containership;13000;124.7173611
