@@ -192,6 +192,7 @@ public class Model {
             lstStepVsDate.add(new Date(dataOfLine[0]));
         }
         this.mapDateVsStep = new TreeMap<Date,Integer>(mapDateStepTemp);
+        Collections.sort(this.lstStepVsDate);
         scanner.close();
     }
     public void chargerModel (String path) throws IOException
