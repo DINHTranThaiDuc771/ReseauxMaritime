@@ -3,9 +3,9 @@ package Executable;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-
 
 import Model.Date;
 import Model.Model;
@@ -19,84 +19,102 @@ public class WriteDGSFile {
         FileWriter writer = new FileWriter("graphDynamic.dgs", true);
         // FileWriter writerTest = new FileWriter("test.txt", true);
         Model model = new Model();
-        model.chargerModel("./testData/testMoves.csv");
+        model.chargerModel("./testData/testDGS.csv");
         model.chargerListDateVsStep("./tmp/dates_vs_step");
         // Write 2 first line
         writer.write("DGS004\n");
         writer.write("null 0 0\n");
+        // Chaque Date (step) setEdge et setNavire vont être modifiés
         HashSet<EdgeNav> setEdge = new HashSet<EdgeNav>();
-        // HashSet<Navire> setNavire = model.getSetNavire();
         HashSet<Navire> setNavire = new HashSet<Navire>();
         ArrayList<Date> lstDate = model.getLstStepVsDate();
-        /*-------------------------------------- */
-        /*-----------------Add Node------------- */
-        /*-------------------------------------- */
-        // an A
-        // for (Navire nav : setNavire) {
-        //     // int[] positionNavire = model.positionNavire(nav, date);
-        //     // int[] arraysAvantHistorique = { -1, -1 };
-        //     // if (Arrays.equals(arraysAvantHistorique, positionNavire)) {
-        //     //     // TODO Isolate navires by changing color in green;
-        //     // }
-        //     String idnav = "n" + nav.toString();
-        //     writer.write("an " + idnav + "\n");
-        // }
+
         int step = 0;
         for (Date date : lstDate) {
             // writerTest.write("st " + (step++) + "\n");
             writer.write("st " + (step++) + "\n");
             writer.write("#Date " + date + "\n");
             /*-------------------------------------- */
-            /*----------- retirer les arêtes---------*/
+            /*----------- Construire setEdgeNew-------*/
             /*-------------------------------------- */
-            if (!(setEdge.isEmpty())) {
-                for (EdgeNav edge : setEdge) {
-                    String idI = "n" + edge.getNavA().toString();
-                    String idJ = "n" + edge.getNavB().toString();
-                    writer.write("de " + idI + idJ + "\n");
-                }
-            }
-            setEdge.clear();
-            /*-------------------------------------- */
-            /*----------- retirer les nodes---------*/
-            /*-------------------------------------- */
-            if (!(setNavire.isEmpty())) {
-                for (Navire navire : setNavire) {
-                    String idNavire = "n"+navire.toString();
-                    writer.write("dn " + idNavire+"\n");
-                }
-            }
-            setNavire.clear();
-            /*-------------------------------------- */
-            /*-----------------Add edges------------ */
-            /*-------------------------------------- */
-            // ae AB A B = add edge [id] nodeA nodeB
-            HashMap<Integer, HashSet<Navire>> mapPorteNavire = model.getPorteAvecNavire(date.toString());
-            for (Integer port : mapPorteNavire.keySet()) {
-                writer.write("#Port " + port + "\n");
-                for (int i = 0; i < mapPorteNavire.get(port).size(); i++) {
-                    ArrayList<Navire> lstNavire = new ArrayList<>(mapPorteNavire.get(port));
-                    for (int j = i + 1; j < mapPorteNavire.get(port).size(); j++) {
-                        EdgeNav edgeTraite = new EdgeNav(lstNavire.get(i), lstNavire.get(j));
-                        if (port == -1)
-                        {                        
-                            continue; //We don't add the node (navire) that historique avant la date
-                        }
-                        if (setEdge.add(edgeTraite)) 
-                        {
-                            String idI = "n" + edgeTraite.getNavA().toString();
-                            String idJ = "n" + edgeTraite.getNavB().toString();
-                            if (setNavire.add(edgeTraite.getNavA()))
-                                writer.write("an "+"n"+edgeTraite.getNavA()+"\n");
-                            if (setNavire.add(edgeTraite.getNavB()))
-                                writer.write("an "+"n"+edgeTraite.getNavB()+"\n");
 
-                            writer.write("ae " + idI + idJ + " " + idI + " " + idJ + "\n");
-                            // writerTest.write(edgeTraite+"\n");
-                        }
+            System.out.println("Construire setEdgeNew");
+            HashSet<EdgeNav> setEdgeNew = new HashSet<EdgeNav>();
+            HashMap<Integer, HashSet<Navire>> mapPorteAvecNavire = model.getPorteAvecNavire(date.toString());
+            for (Integer port : mapPorteAvecNavire.keySet()) {
+                ArrayList<Navire> lstNavireDePorteTraite = new ArrayList<Navire>(mapPorteAvecNavire.get(port));
+                if (port == -2)
+                    continue;
+                if (port == -1)
+                    continue;
+
+                for (int i = 0; i < lstNavireDePorteTraite.size(); i++) {
+                    for (int j = i + 1; j < lstNavireDePorteTraite.size(); j++) {
+                        EdgeNav edgeTraite = new EdgeNav(lstNavireDePorteTraite.get(i), lstNavireDePorteTraite.get(j));
+                        setEdgeNew.add(edgeTraite);
                     }
                 }
             }
+            /*-------------------------------------- */
+            /*----------- remove Edge-----------------*/
+            /*-------------------------------------- */
+            HashSet<EdgeNav> setEdgeToRemove = new HashSet<EdgeNav>(setEdge);
+            setEdgeToRemove.removeAll(setEdgeNew);
+            for (EdgeNav edge : setEdgeToRemove) {
+                if (setEdge.remove(edge)) {
+                    String idI = "n" + edge.getNavA().toString();
+                    String idJ = "n" + edge.getNavB().toString();
+                    //TODO ce idI idJ present="false"
+                    writer.write("de " + idI + idJ + "\n");
+                }
+            }
+            System.out.println("Finish Constructing setEdgeNew");
+            /*-------------------------------------- */
+            /*----------- Construire setNavire-------*/
+            /*-------------------------------------- */
+            System.out.println("Construire setNavire");
+
+            HashMap<Navire, int[]> mapNavireVsPorte = model.getNavireAvecPorte(date.toString());
+            int[] avantHistorique = { -1, -1 };
+            int[] apresHistorique = { -2, -2 };
+            for (Navire nav : mapNavireVsPorte.keySet()) {
+                int[] positionNavireTraite = mapNavireVsPorte.get(nav);
+                if (Arrays.equals(positionNavireTraite, avantHistorique))
+                    continue;
+
+                if (Arrays.equals(positionNavireTraite, apresHistorique)) {
+                    if (setNavire.remove(nav)) {
+                        writer.write("dn " + "n" + nav + "\n");
+                    }
+                    continue;
+                }
+                //TODO change color depending on the port
+                int port = mapNavireVsPorte.get(nav)[0];
+                if (setNavire.add(nav)) {
+                    // writer.write("an " + "n" + nav +" x="+port+" "+"y="+port+" "+ "\n");
+                    writer.write("an " + "n" + nav+"\n");
+                    continue;
+                }
+                if ( ! (setNavire.add(nav)) ) {
+                    // writer.write("cn " + "n" + nav +" x="+port+" "+"y="+port+" "+ "\n");
+                    continue;
+                }                
+            }
+            System.out.println("Finish Constructing setNavire");
+            /*-------------------------------------- */
+            /*----------- add Edge-----------------*/
+            /*-------------------------------------- */
+            HashSet<EdgeNav> setEdgeToAdd = new HashSet<EdgeNav>(setEdgeNew);
+            setEdgeToAdd.removeAll(setEdge);
+            for (EdgeNav edge : setEdgeToAdd) {
+                if (setEdge.add(edge)) {
+                    String idI = "n" + edge.getNavA().toString();
+                    String idJ = "n" + edge.getNavB().toString();
+                    //TODO ce ce idI idJ present="true"
+                    writer.write("ae " + idI + idJ + " " + idI + " " + idJ + " present=\"true\"\n");
+                }
+            }
+
         }
         writer.close();
         System.out.println("finish");
@@ -123,7 +141,7 @@ class EdgeNav {
 
     @Override
     public int hashCode() {
-        return navA.hashCode() +navB.hashCode();
+        return navA.hashCode() + navB.hashCode();
     }
 
     @Override
@@ -137,8 +155,8 @@ class EdgeNav {
         return (navA == edgeNav.navA && navB == edgeNav.navB) ||
                 (navA == edgeNav.navB && navB == edgeNav.navA);
     }
-    public String toString()
-    {
-        return navA+"-"+navB;
+
+    public String toString() {
+        return navA + "-" + navB;
     }
 }
