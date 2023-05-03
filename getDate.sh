@@ -28,7 +28,7 @@ awk '{
     print date;
 }' ./tmp/datesOrdonnees | sort -t ' ' -k 1n -k 2n -k 3n  > ./tmp/datesSort.csv 
 #specify that the sort should be done first on field 1, then field 2, and finally on field 3
-
+#The n flag after each field number specifies that each field should be sorted numerically.
 echo "writing datesSort2.csv"
 awk '{
     t = $1; $1 = $3; $2 = $2 ; $3 = t ; print;
