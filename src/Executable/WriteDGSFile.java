@@ -46,7 +46,8 @@ public class WriteDGSFile {
                     continue;
                 if (port == -1)
                     continue;
-
+                if (port == 0)
+                    continue;
                 for (int i = 0; i < lstNavireDePorteTraite.size(); i++) {
                     for (int j = i + 1; j < lstNavireDePorteTraite.size(); j++) {
                         EdgeNav edgeTraite = new EdgeNav(lstNavireDePorteTraite.get(i), lstNavireDePorteTraite.get(j));
