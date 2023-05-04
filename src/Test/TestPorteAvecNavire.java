@@ -10,8 +10,8 @@ import Model.*;
 public class TestPorteAvecNavire {
     public static void main(String[] args) throws IOException {
         Model model = new Model();
-        model.chargerModel("./testData/testMoves.csv");
-        HashMap<Integer,HashSet<Navire>> mapPorteAvecNavire = model.getPorteAvecNavire("07/03/1977 00:00");
+        model.chargerModel("./testData/testDGS.csv");
+        HashMap<Integer,HashSet<Navire>> mapPorteAvecNavire = model.getPorteAvecNavire("01/07/2016 00:00");
         TreeMap<Integer,HashSet<Navire>> sorted = new TreeMap<Integer,HashSet<Navire>>(mapPorteAvecNavire);
         sorted.forEach(
             (k,v) -> 

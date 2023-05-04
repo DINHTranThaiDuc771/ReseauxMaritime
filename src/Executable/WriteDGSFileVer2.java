@@ -46,6 +46,7 @@ public class WriteDGSFileVer2 {
                     continue;
                 if(setPort.add(port))
                 {
+                    //writer.write("an p"+port+" "+("x="+port)+" "+("y="+port)+" "+ "ui.style=\"fill-color: rgb(0,100,255);\"\n");                    
                     writer.write("an p"+port+" ui.style=\"fill-color: rgb(0,100,255);\"\n");
                 }
             }
@@ -53,7 +54,6 @@ public class WriteDGSFileVer2 {
             /*-------------------------------------- */
             /*----------- Construire setNavire-------*/
             /*-------------------------------------- */
-            System.out.println("Construire setNavire");
 
             HashMap<Navire, int[]> mapNavireVsPorte = model.getNavireAvecPorte(date.toString());
             int[] avantHistorique = { -1, -1 };
@@ -92,7 +92,6 @@ public class WriteDGSFileVer2 {
                     continue;
                 }                
             }
-            System.out.println("Finish Constructing setNavire");
 
 
         }

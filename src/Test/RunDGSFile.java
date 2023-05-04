@@ -22,7 +22,7 @@ public class RunDGSFile {
 		{
 			// Scanner  scanner = new Scanner(System.in);
 			// while (scanner.nextLine()==null);
-			Thread.sleep (1000);
+			Thread.sleep (100);
 		}
 		source.end();
 		System.out.println("finish constructing");
