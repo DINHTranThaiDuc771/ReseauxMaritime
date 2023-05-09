@@ -182,14 +182,16 @@ public class Model {
         FileInputStream     inputStream = new FileInputStream(fichier);
         Scanner             scanner     = new Scanner(inputStream,"UTF-8");
         HashMap<Date,Integer> mapDateStepTemp = new HashMap<Date,Integer> ();
-        //Ignore the first line
+        //Ignore the first and second line
         scanner.nextLine();
+        scanner.nextLine();
+
         while (scanner.hasNextLine())
         {
             String line = scanner.nextLine();
             String dataOfLine[]=line.split(" ");
-            mapDateStepTemp.put(new Date(dataOfLine[0]), Integer.parseInt(dataOfLine[1]));
-            lstStepVsDate.add(new Date(dataOfLine[0]));
+            mapDateStepTemp.put(new Date(dataOfLine[0],true), Integer.parseInt(dataOfLine[1]));
+            lstStepVsDate.add(new Date(dataOfLine[0],true));
         }
         this.mapDateVsStep = new TreeMap<Date,Integer>(mapDateStepTemp);
         Collections.sort(this.lstStepVsDate);
@@ -293,6 +295,10 @@ public class Model {
 
             }
         );
+        model.mapDateVsStep.forEach(
+            (key, value) -> System.out.println(key + " :" + value)
+        );
+
         
     }
     public static void testTerminal(Model model) {
