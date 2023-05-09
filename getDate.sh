@@ -2,11 +2,11 @@
 
 #From the content of allMoves.csv, extract the date
 mkdir -p ./tmp
-echo "writing datesdepart.csv"
-cat $1 | cut -d ";" -f 5 | cut -d " " -f 1 |tr "/" " " >./tmp/datesdepart
+echo "writing dates_depart_arrival.csv"
+cat $1 | cut -d ";" -f 5,6 | awk -F ";" '{print $1;print $2;}' | cut -d " " -f 1 >./tmp/dates_depart_arrival
 
 echo "writing dates.csv"
-awk ' { t = $1; $1 = $3; $2 = $2 ; $3 = t ; print; } ' ./tmp/datesdepart | tr " " "_" | sort -t '_' -n -k 1,3 | uniq >./tmp/dates
+awk -F "/" '{ t = $1; $1 = $3; $2 = $2 ; $3 = t ; print; } ' ./tmp/dates_depart_arrival | tr " " "_" | sort -t '_' -n -k 1,3 | uniq >./tmp/dates
 
 echo "writing dates2.csv"
 cat ./tmp/dates | tr "_" " " >./tmp/dates2
@@ -42,6 +42,8 @@ for i in $(cat ./tmp/datesSort2.csv); do
     ((j = j + 1))
 done >./tmp/dates_vs_step
 
+echo "writing files mois"
+cat ./tmp/datesSort2.csv | tr "/" " " | awk '{ print $3" "$2}' | sort | uniq -c | awk '{print $3"/"$2" "$1}'> ./tmp/mois
 #Rappel:
 #The > symbol is used for output redirection -> overwrite
 #The >> symbol is used for output redirection -> append
