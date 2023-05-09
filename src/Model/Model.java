@@ -15,8 +15,8 @@ import java.util.Comparator;
 
 public class Model {
     private HashSet<Navire> setNavire ;
-    private HashMap<Navire,LinkedList<Move>> mapHistoireNavire;
-    private HashMap<Navire,ArrayList<Date>> mapListDate;//un hashmap qui stock des navires et leurs dates départ et arrival, 
+    private HashMap<Navire,LinkedList<Move>> mapNavireVsListmove;
+    private HashMap<Navire,ArrayList<Date>> mapNavireVsListDate;//un hashmap qui stock des navires et leurs dates départ et arrival, 
     private TreeMap<Date,Integer>           mapDateVsStep;
     private ArrayList<Date>                 lstStepVsDate;
     /*---------------------------------------------------------------------------------------- */
@@ -32,8 +32,8 @@ public class Model {
 
     public Model () {
         setNavire           = new HashSet<>();
-        mapHistoireNavire   = new HashMap<Navire,LinkedList<Move>>();
-        mapListDate         = new HashMap<Navire,ArrayList<Date>>();
+        mapNavireVsListmove = new HashMap<Navire,LinkedList<Move>>();
+        mapNavireVsListDate = new HashMap<Navire,ArrayList<Date>>();
         mapDateVsStep       = new TreeMap<Date,Integer>();
         lstStepVsDate       = new ArrayList<Date>();
     }
@@ -50,7 +50,7 @@ public class Model {
         int[]            tabPosition        = new int[2];
         int              currentPosition    = 0;
         Move             moveArrete         = null;
-        LinkedList<Move> lstMoveNavire      = mapHistoireNavire.get(navire);
+        LinkedList<Move> lstMoveNavire      = mapNavireVsListmove.get(navire);
         if (lstMoveNavire.getLast().getArrival().isBefore(date))
         {
             int[] array = {-2,-2};
@@ -99,7 +99,7 @@ public class Model {
      */
     private void sortMove ()
     {
-        this.mapHistoireNavire.forEach((key,value)->
+        this.mapNavireVsListmove.forEach((key,value)->
         {
             Collections.sort(value);
         }
@@ -107,15 +107,15 @@ public class Model {
     }
     private void sortDate()
     {
-        this.mapListDate.forEach((key,value)->
+        this.mapNavireVsListDate.forEach((key,value)->
         {
             Collections.sort(value);
         });
     }
     public void coherentModel(){
-        for (Navire navire : mapHistoireNavire.keySet())
+        for (Navire navire : mapNavireVsListmove.keySet())
         {
-            LinkedList<Move> lstMoveNavireTraite = mapHistoireNavire.get(navire); // L'Historique de navigation
+            LinkedList<Move> lstMoveNavireTraite = mapNavireVsListmove.get(navire); // L'Historique de navigation
             //Use iterator to improve performance
             ListIterator<Move> it=  lstMoveNavireTraite.listIterator(0);
             Move previousMove,currentMove;
@@ -146,7 +146,7 @@ public class Model {
      */
     public HashMap<Navire,int[]> getNavireAvecPorte(String date)
     {
-        TreeMap<Navire, LinkedList<Move>> sorted            = new TreeMap<>(this.mapHistoireNavire); // sort hashMap
+        TreeMap<Navire, LinkedList<Move>> sorted            = new TreeMap<>(this.mapNavireVsListmove); // sort hashMap
         HashMap<Navire,int[]> mapNavireAvecPorte = new  HashMap<Navire,int[]>();
         for (Navire nav : sorted.keySet())
         {
@@ -221,24 +221,24 @@ public class Model {
             Navire navireTraite = new Navire (Integer.parseInt(dataOfLine[12]));
             if (this.setNavire.add (navireTraite) ) // if navire Traité is not in the set
             {
-                this.mapListDate        .put(navireTraite, new ArrayList<Date>());
-                this.mapHistoireNavire  .put(navireTraite,new LinkedList<Move>());
+                this.mapNavireVsListDate        .put(navireTraite, new ArrayList<Date>());
+                this.mapNavireVsListmove  .put(navireTraite,new LinkedList<Move>());
                 Move moveTraite = new Move(dataOfLine[4], dataOfLine[5], Integer.parseInt(dataOfLine[6]), Integer.parseInt(dataOfLine[7]) );
-                this.mapHistoireNavire   .get(navireTraite).add(moveTraite);
+                this.mapNavireVsListmove   .get(navireTraite).add(moveTraite);
                 Date dateDepart = new Date(dataOfLine[4]);
                 Date dateArrival= new Date(dataOfLine[5]);
-                if (!(this.mapListDate.get(navireTraite).contains(dateDepart)))this.mapListDate.get(navireTraite).add(dateDepart);
-                if (!(this.mapListDate.get(navireTraite).contains(dateArrival)))this.mapListDate.get(navireTraite).add(dateArrival);
+                if (!(this.mapNavireVsListDate.get(navireTraite).contains(dateDepart)))this.mapNavireVsListDate.get(navireTraite).add(dateDepart);
+                if (!(this.mapNavireVsListDate.get(navireTraite).contains(dateArrival)))this.mapNavireVsListDate.get(navireTraite).add(dateArrival);
 
             }
             else // if navire Traité is already in the set
             {
                 Move moveTraite = new Move(dataOfLine[4], dataOfLine[5], Integer.parseInt(dataOfLine[6]), Integer.parseInt(dataOfLine[7]) );
-                this.mapHistoireNavire.get(navireTraite).add(moveTraite);
+                this.mapNavireVsListmove.get(navireTraite).add(moveTraite);
                 Date dateDepart = new Date(dataOfLine[4]);
                 Date dateArrival= new Date(dataOfLine[5]);
-                if (!(this.mapListDate.get(navireTraite).contains(dateDepart)))this.mapListDate.get(navireTraite).add(dateDepart);
-                if (!(this.mapListDate.get(navireTraite).contains(dateArrival)))this.mapListDate.get(navireTraite).add(dateArrival);
+                if (!(this.mapNavireVsListDate.get(navireTraite).contains(dateDepart)))this.mapNavireVsListDate.get(navireTraite).add(dateDepart);
+                if (!(this.mapNavireVsListDate.get(navireTraite).contains(dateArrival)))this.mapNavireVsListDate.get(navireTraite).add(dateArrival);
 
             }
         }
@@ -257,7 +257,7 @@ public class Model {
      */
     public void afficherPostionDesNavires(String date)
     {
-        TreeMap<Navire, LinkedList<Move>> sorted            = new TreeMap<>(this.mapHistoireNavire); // sort hashMap
+        TreeMap<Navire, LinkedList<Move>> sorted            = new TreeMap<>(this.mapNavireVsListmove); // sort hashMap
 
         for (Navire nav : sorted.keySet())
         {
@@ -271,7 +271,7 @@ public class Model {
         else model.chargerModel("./testData/testMoves.csv");
         model.coherentModel();
         model.chargerListDateVsStep("./tmp/dates_vs_step");
-        TreeMap<Navire, LinkedList<Move>> sorted            = new TreeMap<>(model.mapHistoireNavire); // sort hashMap
+        TreeMap<Navire, LinkedList<Move>> sorted            = new TreeMap<>(model.mapNavireVsListmove); // sort hashMap
         System.out.println("Writing files");
 
         sorted.forEach(
@@ -289,7 +289,7 @@ public class Model {
                         writer.write(line+"\n");
                     }
                     writer.write("\nPosition de Navire "+ key+"\n");
-                    for (Date date : model.mapListDate.get(key)){
+                    for (Date date : model.mapNavireVsListDate.get(key)){
                         writer.write(date.toString()+Arrays.toString(model.positionNavire(key,date))+"\n");                       
                     }
                     writer.close();
@@ -319,7 +319,7 @@ public class Model {
         
         System.out.println("---------------------------------------Test Map Histoire-----------------------------------------------");
 
-        TreeMap<Navire, LinkedList<Move>> sorted            = new TreeMap<>(model.mapHistoireNavire); // sort hashMap
+        TreeMap<Navire, LinkedList<Move>> sorted            = new TreeMap<>(model.mapNavireVsListmove); // sort hashMap
         sorted.forEach(
             (key,value) -> {
                 System.out.println("Navire: "+ key);
@@ -330,7 +330,7 @@ public class Model {
         );
         System.out.println("---------------------------------------Test Cohérent-----------------------------------------------");
         model.coherentModel();
-        sorted            = new TreeMap<>(model.mapHistoireNavire); // sort hashMap
+        sorted            = new TreeMap<>(model.mapNavireVsListmove); // sort hashMap
         sorted.forEach(
             (key,value) -> {
                 System.out.println("Navire: "+ key);
