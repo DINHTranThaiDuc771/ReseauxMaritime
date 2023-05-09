@@ -35,7 +35,7 @@ awk '{
 }' ./tmp/datesSort.csv| tr " " "/"> ./tmp/datesSort2.csv
 
 echo "writing dates_vs_step.csv"
-j=-1
+j=-2
 for i in $(cat ./tmp/datesSort2.csv); do
     echo $i | tr "\n" " "
     echo $j #echo = print("[something]"+"\n")

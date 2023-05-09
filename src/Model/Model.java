@@ -90,6 +90,10 @@ public class Model {
     {
         return positionNavire(navire, new Date(dateString));
     }
+    public int[] positionNavire(Navire navire,String dateString,boolean formatted)
+    {
+        return positionNavire(navire, new Date(dateString,formatted));
+    }
     /*
      * Sort all the LinkedList of Move for all the Navires
      */
@@ -146,7 +150,7 @@ public class Model {
         HashMap<Navire,int[]> mapNavireAvecPorte = new  HashMap<Navire,int[]>();
         for (Navire nav : sorted.keySet())
         {
-            mapNavireAvecPorte.put(nav, positionNavire(nav, date));
+            mapNavireAvecPorte.put(nav, positionNavire(nav, date,true));
         }
         return mapNavireAvecPorte;
         
