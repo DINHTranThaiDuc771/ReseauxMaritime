@@ -16,7 +16,10 @@ import Model.Navire;
  */
 public class WriteDGSFile {
     public static void main(String[] args) throws IOException {
-        FileWriter writer = new FileWriter("graphDynamic.dgs", true);
+        FileWriter writer = new FileWriter("graphDynamic.dgs", false);
+        writer.write(""); //Delete content of the file
+        writer.close();
+        writer = new FileWriter("graphDynamic.dgs", true);
         // FileWriter writerTest = new FileWriter("test.txt", true);
         Model model = new Model();
         model.chargerModel("./testData/testDGS.csv");
