@@ -16,12 +16,16 @@ import Model.Navire;
  */
 public class WriteDGSFileVer2 {
     public static void main(String[] args) throws IOException {
-        FileWriter writer = new FileWriter("graphDynamic.dgs", true);
+        FileWriter writer = new FileWriter("graphDynamic.dgs", false);
+        writer.write(""); //Delete content of the file
+        writer.close();
+        writer = new FileWriter("graphDynamic.dgs", true);
         // FileWriter writerTest = new FileWriter("test.txt", true);
         Model model = new Model();
-        model.chargerModel("./testData/testDGS.csv");
+        model.chargerModel("./testData/allMoves.csv");
         model.chargerListDateVsStep("./tmp/dates_vs_step");
         // Write 2 first line
+        System.out.println("Writing file dgs");
         writer.write("DGS004\n");
         writer.write("null 0 0\n");
         // Chaque Date (step) setEdge et setNavire vont être modifiés
@@ -44,6 +48,8 @@ public class WriteDGSFileVer2 {
                     continue;
                 if (port == -1)
                     continue;
+                if (port == 0)
+                    continue;
                 if(setPort.add(port))
                 {
                     //writer.write("an p"+port+" "+("x="+port)+" "+("y="+port)+" "+ "ui.style=\"fill-color: rgb(0,100,255);\"\n");                    
@@ -58,6 +64,7 @@ public class WriteDGSFileVer2 {
             HashMap<Navire, int[]> mapNavireVsPorte = model.getNavireAvecPorte(date.toString());
             int[] avantHistorique = { -1, -1 };
             int[] apresHistorique = { -2, -2 };
+            int[] enRoute         = {  0,  0 };
             for (Navire nav : mapNavireVsPorte.keySet()) {
                 int[] positionNavireTraite = mapNavireVsPorte.get(nav);
                 if (Arrays.equals(positionNavireTraite, avantHistorique))
@@ -76,6 +83,7 @@ public class WriteDGSFileVer2 {
 
                 if (setNavire.add(nav)) {
                     writer.write("an " + "n" + nav+"\n");
+                    if (Arrays.equals(positionNavireTraite, enRoute))   continue;
                     writer.write("ae "+ ("n"+nav) +("p"+port1)+" "+("n"+nav)+" "+("p"+port1)+"\n");
                     //TODO Port2
                     if (port2!= port1)
@@ -83,8 +91,10 @@ public class WriteDGSFileVer2 {
                     continue;
                 }
                 if ( ! (setNavire.add(nav)) ) {
+                    //TODO Change 2 line
                     writer.write("dn " + "n" + nav+"\n");
                     writer.write("an " + "n" + nav+"\n");
+                    if (Arrays.equals(positionNavireTraite, enRoute))   continue;
                     writer.write("ae "+ ("n"+nav) +("p"+port1)+" "+("n"+nav)+" "+("p"+port1)+"\n");
                     //TODO Port2
                     if (port2!= port1)

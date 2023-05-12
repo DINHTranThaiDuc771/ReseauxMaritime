@@ -22,9 +22,10 @@ public class WriteDGSFile {
         writer = new FileWriter("graphDynamic.dgs", true);
         // FileWriter writerTest = new FileWriter("test.txt", true);
         Model model = new Model();
-        model.chargerModel("./testData/testDGS.csv");
+        model.chargerModel("./testData/testMoves8000.csv");
         model.chargerListDateVsStep("./tmp/dates_vs_step");
         // Write 2 first line
+        System.out.println("Writing dgs file");
         writer.write("DGS004\n");
         writer.write("null 0 0\n");
         // Chaque Date (step) setEdge et setNavire vont être modifiés
@@ -93,7 +94,7 @@ public class WriteDGSFile {
                 int port = mapNavireVsPorte.get(nav)[0];
                 if (setNavire.add(nav)) {
                     // writer.write("an " + "n" + nav +" x="+port+" "+"y="+port+" "+ "\n");
-                    writer.write("an " + "n" + nav+"\n");
+                    writer.write("an " + "n" + nav+" label="+nav+" \n");
                     continue;
                 }
                 if ( ! (setNavire.add(nav)) ) {
