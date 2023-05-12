@@ -1,4 +1,8 @@
 package Model;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Move implements Comparable<Move>{
     private Date depart;
     private Date arrival;
@@ -37,10 +41,67 @@ public class Move implements Comparable<Move>{
     public int getTo_id() {
         return to_id;
     }
-    public static Move checkCoherent(Move previousMove, Move currentMove) {
-        if (previousMove.to_id == currentMove.from_id)
+    public static Move checkCoherent(Move moveBefore, Move moveAfter) {
+        if (moveBefore.to_id == moveAfter.from_id)
             return null;
-        return new Move(previousMove.arrival, currentMove.depart, previousMove.to_id, currentMove.from_id);
+        return new Move(moveBefore.arrival, moveAfter.depart, moveBefore.to_id, moveAfter.from_id);
+    }
+    public static List<Move> checkCoherent2(Move moveBefore, Move moveAfter) {
+        //TODO Test method
+        if (moveBefore.to_id == moveAfter.from_id)
+            return null;
+        List<Move> movesRet = new ArrayList<>();
+        //For example, the 3/3 and 1/3 will return 2 by the method Date.between, but 
+        //The date that can be used to add more Move is only the 2/3, which is 2-1
+        int ecart = Date.between(moveBefore.getArrival(),moveAfter.getDepart()) -1;
+        if (ecart > 10)
+        {
+            //Imagine if ecart =11 , between the 1/3 and 13/3
+
+            //Add 5 moves to indicate that the navire stay at the same port in 5 days
+            Move moveCurrentToAdd = new Move(Date.getNextDate(moveBefore.getArrival(),1), Date.getNextDate(moveBefore.getArrival(),1), moveBefore.to_id, moveBefore.to_id); 
+            movesRet.add (moveCurrentToAdd);
+            for (int cpt = 0; cpt < 4; cpt++)
+            {
+                // stay in port moveBefore.to_id for 5 days : from 2/3 to 6/3
+                moveCurrentToAdd = new Move (Date.getNextDate(moveCurrentToAdd.getArrival(),1),Date.getNextDate(moveCurrentToAdd.getArrival(),1),moveCurrentToAdd.to_id,moveCurrentToAdd.to_id);
+                movesRet.add (moveCurrentToAdd);
+            }
+            //Nulle part for 11-10 days : 7/3
+            Date datetmp = Date.getNextDate(moveCurrentToAdd.getArrival(),1);
+            moveCurrentToAdd = new Move (datetmp,Date.getNextDate(datetmp, ecart-11),-3,-3);
+            movesRet.add(moveCurrentToAdd);
+            //Add move that it moves from old port to the new : from 8/3 to 12/3
+            datetmp = Date.getNextDate(moveCurrentToAdd.getArrival(),1);
+            moveCurrentToAdd = new Move (datetmp,Date.getPreviousDate(moveAfter.getDepart(), 1),moveBefore.to_id,moveAfter.from_id);
+            movesRet.add(moveCurrentToAdd);
+            return movesRet;
+
+        }
+        if (ecart <= 10 && ecart > 5)
+        {
+            //Add 5 moves to say that the navire stay at the same port in 5 days
+            Move moveCurrentToAdd = new Move(Date.getNextDate(moveBefore.getArrival(),1), Date.getNextDate(moveBefore.getArrival(),1), moveBefore.to_id, moveBefore.to_id); 
+            movesRet.add (moveCurrentToAdd);
+            for (int cpt = 0; cpt < 4; cpt++)
+            {
+                // stay in port moveBefore.to_id for 5 days : from 2/3 to 6/3
+                moveCurrentToAdd = new Move (Date.getNextDate(moveCurrentToAdd.getArrival(),1),Date.getNextDate(moveCurrentToAdd.getArrival(),1),moveCurrentToAdd.to_id,moveCurrentToAdd.to_id);
+                movesRet.add (moveCurrentToAdd);
+            }
+
+             //Add move that it moves from old port to the new
+            Date datetmp = Date.getNextDate(moveCurrentToAdd.getArrival(),1);
+            moveCurrentToAdd = new Move (datetmp,Date.getPreviousDate(moveAfter.getDepart(), 1),moveBefore.to_id,moveAfter.from_id);
+            movesRet.add(moveCurrentToAdd);
+            return movesRet;           
+        }
+        if (ecart <= 5)
+        {
+            movesRet.add (Move.checkCoherent(moveBefore, moveAfter));
+            return movesRet;
+        }
+        return movesRet;
     }
     @Override
     public int compareTo(Move m) {

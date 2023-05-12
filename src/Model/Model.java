@@ -112,6 +112,37 @@ public class Model {
             Collections.sort(value);
         });
     }
+    public void coherentModel2()
+    {
+        //TODO REDO METHOD
+        for (Navire navire : mapNavireVsListmove.keySet())
+        {
+            LinkedList<Move> lstMoveNavireTraite = mapNavireVsListmove.get(navire); // L'Historique de navigation
+            //Use iterator to improve performance
+            ListIterator<Move> it=  lstMoveNavireTraite.listIterator(0);
+            Move previousMove,currentMove;
+            previousMove = currentMove = null;
+            if (it.hasNext())
+            {
+                previousMove = it.next(); //Assigne the first move to previous
+            }             
+            //Now the iterator is between the first and second element.
+            while (it.hasNext())
+            {
+                currentMove = it.next();
+                //Vérifier les données et le faire cohérent
+                Move potentialMove = Move.checkCoherent(previousMove,currentMove);
+                if (potentialMove != null)
+                {
+                    it.previous();
+                    it.add(potentialMove);
+                    it.next();
+                }
+                //Update previous var
+                previousMove = currentMove;
+            }
+        }
+    }
     public void coherentModel(){
         for (Navire navire : mapNavireVsListmove.keySet())
         {
@@ -248,6 +279,9 @@ public class Model {
         System.out.println("Finish sortMove");
         this.sortDate();
         System.out.println("Finish sortDate");
+        //TODO coherentModel2()
+        this.coherentModel();
+        System.out.println("Finish coherent");
 
     }
 

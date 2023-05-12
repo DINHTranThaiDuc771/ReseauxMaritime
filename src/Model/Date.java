@@ -1,6 +1,7 @@
 package Model;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 /*
@@ -124,12 +125,18 @@ public class Date implements Comparable<Date>{
         Date date2 = new Date("03/03/1977 00:00");
         Date date3 = new Date("01/03/1977 00:00");
         Date date4 = new Date("01/03/1988 00:00");
+        Date date5 = new Date("31/12/1988 00:00");
+
         System.out.println(
                 date1.isAfter(date2) + "\n" + // false
                         date1.isAfter(date3) + "\n" + // false
                         date4.isAfter(date1) + "\n" + // true
                         date1.equals(date3) // true
         );
+        //Test NextDate
+        System.out.println(Date.getNextDate(date5,1)); //01/01/1989
+        //Test Between
+        System.out.println (Date.between(date1, date2));
     }
 
     public int compareTo(Date date) {
@@ -140,5 +147,23 @@ public class Date implements Comparable<Date>{
     @Override
     public int hashCode() {
         return this.value.hashCode();
+    }
+
+    public static Date getNextDate(Date date,int daysToAdd) {
+        LocalDate localDate = LocalDate.of(date.year(), date.month(), date.day()).plusDays(daysToAdd);
+        String formattedDate = localDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        return new Date(formattedDate + " 00:00");
+    }
+    public static Date getPreviousDate (Date date, int daysToSubtract)
+    {
+        LocalDate localDate = LocalDate.of(date.year(), date.month(), date.day()).minusDays(daysToSubtract);
+        String formattedDate = localDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        return new Date(formattedDate + " 00:00");
+    }
+    public static int between(Date date1, Date date2) {
+        LocalDate localDate1 = LocalDate.of (date1.year(), date1.month(), date1.day());
+        LocalDate localDate2 = LocalDate.of (date2.year(), date2.month(), date2.day());
+        Period period = Period.between(localDate1, localDate2);
+        return period.getDays();
     }
 }
