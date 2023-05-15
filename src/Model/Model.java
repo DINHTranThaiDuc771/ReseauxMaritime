@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Scanner;
 import java.util.TreeMap;
@@ -114,29 +115,33 @@ public class Model {
     }
     public void coherentModel2()
     {
-        //TODO REDO METHOD
+        //TODO TEST METHOD
         for (Navire navire : mapNavireVsListmove.keySet())
         {
             LinkedList<Move> lstMoveNavireTraite = mapNavireVsListmove.get(navire); // L'Historique de navigation
             //Use iterator to improve performance
             ListIterator<Move> it=  lstMoveNavireTraite.listIterator(0);
             Move previousMove,currentMove;
-            previousMove = currentMove = null;
+            previousMove  = null;
+            currentMove   = null;
             if (it.hasNext())
             {
-                previousMove = it.next(); //Assigne the first move to previous
+                previousMove = it.next(); //Assigne the first move to previous and advance the cursor
             }             
             //Now the iterator is between the first and second element.
             while (it.hasNext())
             {
                 currentMove = it.next();
                 //Vérifier les données et le faire cohérent
-                Move potentialMove = Move.checkCoherent(previousMove,currentMove);
-                if (potentialMove != null)
+                List<Move> potentialMoves = Move.checkCoherent2(previousMove,currentMove);
+                if (potentialMoves != null  )
                 {
-                    it.previous();
-                    it.add(potentialMove);
-                    it.next();
+                    for (Move move: potentialMoves)
+                    {
+                        it.previous();
+                        it.add(move);
+                        it.next();
+                    }
                 }
                 //Update previous var
                 previousMove = currentMove;
@@ -280,7 +285,7 @@ public class Model {
         this.sortDate();
         System.out.println("Finish sortDate");
         //TODO coherentModel2()
-        this.coherentModel();
+        this.coherentModel2();
         System.out.println("Finish coherent");
 
     }
@@ -303,7 +308,6 @@ public class Model {
         Model model = new Model();
         if (args.length > 0 ) model.chargerModel(args[0]);
         else model.chargerModel("./testData/testMoves.csv");
-        model.coherentModel();
         model.chargerListDateVsStep("./tmp/dates_vs_step");
         TreeMap<Navire, LinkedList<Move>> sorted            = new TreeMap<>(model.mapNavireVsListmove); // sort hashMap
         System.out.println("Writing files");

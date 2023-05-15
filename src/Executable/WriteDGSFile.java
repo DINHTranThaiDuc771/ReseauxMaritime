@@ -22,7 +22,7 @@ public class WriteDGSFile {
         writer = new FileWriter("graphDynamic.dgs", true);
         // FileWriter writerTest = new FileWriter("test.txt", true);
         Model model = new Model();
-        model.chargerModel("./testData/testMoves8000.csv");
+        model.chargerModel("./data/1977.csv");
         model.chargerListDateVsStep("./tmp/dates_vs_step");
         // Write 2 first line
         System.out.println("Writing dgs file");
@@ -46,11 +46,13 @@ public class WriteDGSFile {
             HashMap<Integer, HashSet<Navire>> mapPorteAvecNavire = model.getPorteAvecNavire(date.toString());
             for (Integer port : mapPorteAvecNavire.keySet()) {
                 ArrayList<Navire> lstNavireDePorteTraite = new ArrayList<Navire>(mapPorteAvecNavire.get(port));
-                if (port == -2)
+                if (port == -2) // Apres la date
                     continue;
-                if (port == -1)
+                if (port == -1) //Avant la date
                     continue;
-                if (port == 0)
+                if (port == 0) // En route
+                    continue;
+                if (port == -3) // Nulle Parte
                     continue;
                 for (int i = 0; i < lstNavireDePorteTraite.size(); i++) {
                     for (int j = i + 1; j < lstNavireDePorteTraite.size(); j++) {
@@ -99,6 +101,21 @@ public class WriteDGSFile {
                 }
                 if ( ! (setNavire.add(nav)) ) {
                     // writer.write("cn " + "n" + nav +" x="+port+" "+"y="+port+" "+ "\n");
+                    if (port == -3)
+                    {
+                        //BLUE
+                        writer.write("cn "+"n"+nav+" ui.style=\"fill-color: rgb(0,100,255);\"\n");
+                        continue;
+                    }
+                    if (port == 0)
+                    {
+                        //Green
+                        writer.write("cn "+"n"+nav+" ui.style=\"fill-color: rgb(124,252,0);\"\n");
+                        continue;
+                    }
+                    //BLACK, back to normal
+                    writer.write("cn "+"n"+nav+" ui.style=\"fill-color: rgb(0,0,0);\"\n");
+
                     continue;
                 }                
             }
@@ -111,8 +128,7 @@ public class WriteDGSFile {
                 if (setEdge.add(edge)) {
                     String idI = "n" + edge.getNavA().toString();
                     String idJ = "n" + edge.getNavB().toString();
-                    //TODO ce ce idI idJ present="true"
-                    writer.write("ae " + idI + idJ + " " + idI + " " + idJ + " present=\"true\"\n");
+                    writer.write("ae " + idI + idJ + " " + idI + " " + idJ + "\n");
                 }
             }
 
