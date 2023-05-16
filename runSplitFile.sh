@@ -7,7 +7,7 @@ if [ -z "$1" ]; then
     echo "Missing argument. Usage: $0 [file path]"
     echo "Divide ./testData/testMoves.csv by default..."
     if [ -d "./data" ]; then
-        echo "Delete..."
+        echo "Reconstruc..."
         cd ./data
         rm -f *.csv
         cd ..
@@ -24,7 +24,7 @@ if [ ! -f "$1" ]; then
 fi
 
 if [ -d "./data" ]; then
-    echo "Delete..."
+    echo "Reconstruc..."
     cd ./data
     rm -f *.csv
     cd ..
