@@ -72,7 +72,15 @@ public class Model {
             currentPosition = move.getTo_id();
             moveArrete = move;
         }
-        if (date.isAfter(moveArrete.getDepart()) && date.isBefore(moveArrete.getArrival())) currentPosition = 0;//en route
+        if (date.isAfter(moveArrete.getDepart()) && date.isBefore(moveArrete.getArrival())) 
+        {
+            currentPosition = 0;//en route
+            if (moveArrete.getFrom_id() == -3)
+            {
+                currentPosition = -3;
+            }
+        }
+    
         if (moveArrete.getDepart().equals(date)  )                                          currentPosition = moveArrete.getFrom_id();
         
         // If le navire départ et arrive dans la même journée

@@ -4,21 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Move implements Comparable<Move>{
+    private final static int NULLE_PARTE = -3;
+    private final static int AVERAGE_SEA_SHIPPING_DURATION = 45; 
     private Date depart;
     private Date arrival;
     private int    from_id;
     private int    to_id;
+
     public Move(String depart, String arrival, int from_id, int to_id) {
-        this.depart = new Date (depart);
-        this.arrival = new Date (arrival);
-        this.from_id = from_id;
-        this.to_id = to_id;
+        this (new Date(depart), new Date(arrival),from_id,to_id);
     }
     public Move(Date depart, Date arrival, int from_id, int to_id) {
         this.depart =  depart;
         this.arrival = arrival;
         this.from_id = from_id;
-        this.to_id = to_id;       
+        this.to_id = to_id;
+        if (Date.between(depart, arrival)> Move.AVERAGE_SEA_SHIPPING_DURATION && from_id != Move.NULLE_PARTE)
+        {
+            this.arrival = Date.getNextDate(this.depart, 10);
+        }       
     }
     @Override
     public String toString () {
@@ -49,11 +53,20 @@ public class Move implements Comparable<Move>{
     public static List<Move> checkCoherent2(Move moveBefore, Move moveAfter) {
         //TODO Test method
         if (moveBefore.to_id == moveAfter.from_id)
-            return null;
+        {
+            if (Date.between(moveBefore.arrival, moveAfter.depart) > 30 )
+            {
+                List<Move> movesRet = new ArrayList<>();
+                movesRet.add(new Move(Date.getNextDate(moveBefore.arrival,1), Date.getPreviousDate(moveAfter.depart, 1), Move.NULLE_PARTE, Move.NULLE_PARTE));
+                return movesRet;
+            }
+            return new ArrayList<Move>();
+        }
+
         List<Move> movesRet = new ArrayList<>();
         //For example, the 3/3 and 1/3 will return 2 by the method Date.between, but 
         //The date that can be used to add more Move is only the 2/3, which is 2-1
-        int ecart = Date.between(moveBefore.getArrival(),moveAfter.getDepart()) -1;
+        long ecart = Date.between(moveBefore.getArrival(),moveAfter.getDepart()) -1;
         if (ecart > 10)
         {
             //Imagine if ecart =11 , between the 1/3 and 13/3
@@ -69,7 +82,7 @@ public class Move implements Comparable<Move>{
             }
             //Nulle part for 11-10 days : 7/3
             Date datetmp = Date.getNextDate(moveCurrentToAdd.getArrival(),1);
-            moveCurrentToAdd = new Move (datetmp,Date.getNextDate(datetmp, ecart-11),-3,-3);
+            moveCurrentToAdd = new Move (datetmp,Date.getNextDate(datetmp, ecart-11),Move.NULLE_PARTE,Move.NULLE_PARTE);
             movesRet.add(moveCurrentToAdd);
             //Add move that it moves from old port to the new : from 8/3 to 12/3
             datetmp = Date.getNextDate(moveCurrentToAdd.getArrival(),1);

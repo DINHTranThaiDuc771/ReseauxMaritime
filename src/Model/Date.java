@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 /*
  * From 31/12/2013, date format is MM/DD/YYYY
  * 
@@ -136,7 +137,10 @@ public class Date implements Comparable<Date>{
         //Test NextDate
         System.out.println(Date.getNextDate(date5,1)); //01/01/1989
         //Test Between
-        System.out.println (Date.between(date1, date2));
+        Date date6 = new Date("31/03/1977");
+        Date date7 = new Date("31/05/1977");
+
+        System.out.println (Date.between(date6, date7));
     }
 
     public int compareTo(Date date) {
@@ -149,21 +153,20 @@ public class Date implements Comparable<Date>{
         return this.value.hashCode();
     }
 
-    public static Date getNextDate(Date date,int daysToAdd) {
+    public static Date getNextDate(Date date,long daysToAdd) {
         LocalDate localDate = LocalDate.of(date.year(), date.month(), date.day()).plusDays(daysToAdd);
         String formattedDate = localDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         return new Date(formattedDate + " 00:00");
     }
-    public static Date getPreviousDate (Date date, int daysToSubtract)
+    public static Date getPreviousDate (Date date, long daysToSubtract)
     {
         LocalDate localDate = LocalDate.of(date.year(), date.month(), date.day()).minusDays(daysToSubtract);
         String formattedDate = localDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         return new Date(formattedDate + " 00:00");
     }
-    public static int between(Date date1, Date date2) {
+    public static long between(Date date1, Date date2) {
         LocalDate localDate1 = LocalDate.of (date1.year(), date1.month(), date1.day());
         LocalDate localDate2 = LocalDate.of (date2.year(), date2.month(), date2.day());
-        Period period = Period.between(localDate1, localDate2);
-        return period.getDays();
+        return ChronoUnit.DAYS.between(localDate1,localDate2);
     }
 }
