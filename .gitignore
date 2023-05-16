@@ -2,6 +2,7 @@ allMoves.csv
 allMoves*.csv
 /data/*
 /dataHistorique
+/dataUniq/*
 /commons-csv-1.10.0
 /lib
 /bin
