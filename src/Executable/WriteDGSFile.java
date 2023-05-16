@@ -22,7 +22,7 @@ public class WriteDGSFile {
         writer = new FileWriter("graphDynamic.dgs", true);
         // FileWriter writerTest = new FileWriter("test.txt", true);
         Model model = new Model();
-        model.chargerModel("./data/1977.csv");
+        model.chargerModel("./dataUniq/1977.csv");
         model.chargerListDateVsStep("./tmp/dates_vs_step");
         // Write 2 first line
         System.out.println("Writing dgs file");
