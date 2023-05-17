@@ -53,37 +53,8 @@ public class Date implements Comparable<Date>{
 
     }
     public Date(String value) {
-        // Need to transform value into dd/mm/yyyy hh:mm before this.value = value
-        // There are 3 format of data in database d/m/yyyy hh:mm and even m/d/yyyy hh:mm (1/13/1988
-        // for exemple)
-        // If value is already in dd/mm/yyyy, just valid it
-        String[] dateFormatsPossible = {"d/M/yyyy HH:mm","d/M/yyyy H:mm", "dd/MM/yyyy HH:mm","dd/MM/yyyy","d/M/yyyy" };
-        boolean isValidDateFormat = false;
 
-        String[] dateData    = value.split(" ");
-        String dateSansHeure = dateData[0];
-        String[] lstArg      = dateSansHeure.split("/");
-        int arg3 = Integer.parseInt(lstArg[2]);
-        int arg2 = Integer.parseInt(lstArg[1]);
-        int arg1 = Integer.parseInt(lstArg[0]); 
-        if (arg3 > 2013 || (arg1 == 12 && arg2 == 31 && arg3 ==2013))
-        {
-            dateFormatsPossible = new String[]{"M/d/yyyy HH:mm","M/d/yyyy H:mm","M/d/yyyy","MM/dd/yyyy","MM/dd/yyyy HH:mm"};
-        }
-        for (String dateFormat : dateFormatsPossible) {
-            try {
-                LocalDate date = LocalDate.parse(value.trim(), DateTimeFormatter.ofPattern(dateFormat));
-                this.value = date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-                isValidDateFormat = true;
-                break;
-            } catch (DateTimeParseException e) {
-                // do nothing and continue trying other date formats
-            }
-        }
-
-        if (!isValidDateFormat) {
-            throw new IllegalArgumentException("Invalid date format: " + value);
-        }
+        this (value, false);
 
     }
 
@@ -156,13 +127,13 @@ public class Date implements Comparable<Date>{
     public static Date getNextDate(Date date,long daysToAdd) {
         LocalDate localDate = LocalDate.of(date.year(), date.month(), date.day()).plusDays(daysToAdd);
         String formattedDate = localDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        return new Date(formattedDate + " 00:00");
+        return new Date(formattedDate + " 00:00",true);
     }
     public static Date getPreviousDate (Date date, long daysToSubtract)
     {
         LocalDate localDate = LocalDate.of(date.year(), date.month(), date.day()).minusDays(daysToSubtract);
         String formattedDate = localDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        return new Date(formattedDate + " 00:00");
+        return new Date(formattedDate + " 00:00",true);
     }
     public static long between(Date date1, Date date2) {
         LocalDate localDate1 = LocalDate.of (date1.year(), date1.month(), date1.day());
