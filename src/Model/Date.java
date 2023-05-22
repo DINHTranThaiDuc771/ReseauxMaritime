@@ -106,7 +106,7 @@ public class Date implements Comparable<Date>{
                         date1.equals(date3) // true
         );
         //Test NextDate
-        System.out.println(Date.getNextDate(date5,1)); //01/01/1989
+        System.out.println(Date.getNextDate(date5,46)); //01/01/1989
         //Test Between
         Date date6 = new Date("31/03/1977");
         Date date7 = new Date("31/05/1977");

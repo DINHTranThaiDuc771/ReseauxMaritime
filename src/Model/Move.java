@@ -5,7 +5,9 @@ import java.util.List;
 
 public class Move implements Comparable<Move>{
     private final static int NULLE_PARTE = -3;
-    private final static int AVERAGE_SEA_SHIPPING_DURATION = 45; 
+    private final static int AVERAGE_SEA_SHIPPING_DURATION = 45;
+    private final static int DURATION_BETWEEN_TWO_MOVE     = 30;
+    private static final int NB_DAYS_IN_A_PORT = 5; 
     private Date depart;
     private Date arrival;
     private int    from_id;
@@ -21,7 +23,7 @@ public class Move implements Comparable<Move>{
         this.to_id = to_id;
         if (Date.between(depart, arrival)> Move.AVERAGE_SEA_SHIPPING_DURATION && from_id != Move.NULLE_PARTE)
         {
-            this.arrival = Date.getNextDate(this.depart, 10);
+            this.arrival = Date.getNextDate(this.depart, Move.AVERAGE_SEA_SHIPPING_DURATION);
         }       
     }
     @Override
@@ -51,13 +53,22 @@ public class Move implements Comparable<Move>{
         return new Move(moveBefore.arrival, moveAfter.depart, moveBefore.to_id, moveAfter.from_id);
     }
     public static List<Move> checkCoherent2(Move moveBefore, Move moveAfter) {
-        //TODO Test method
         if (moveBefore.to_id == moveAfter.from_id)
         {
-            if (Date.between(moveBefore.arrival, moveAfter.depart) > 30 )
+            if (Date.between(moveBefore.arrival, moveAfter.depart) > Move.DURATION_BETWEEN_TWO_MOVE )
             {
                 List<Move> movesRet = new ArrayList<>();
-                movesRet.add(new Move(Date.getNextDate(moveBefore.arrival,1), Date.getPreviousDate(moveAfter.depart, 1), Move.NULLE_PARTE, Move.NULLE_PARTE));
+                // Add 5 moves 
+                Move moveCurrentToAdd = new Move (Date.getNextDate(moveBefore.arrival, 1),Date.getNextDate(moveBefore.arrival, 1),moveBefore.to_id,moveBefore.to_id);
+                movesRet.add (moveCurrentToAdd);
+                for (int cpt = 0; cpt < Move.NB_DAYS_IN_A_PORT - 1; cpt++)
+                {
+                    // stay in port moveBefore.to_id for 5 days : from 2/3 to 6/3
+                    moveCurrentToAdd = new Move (Date.getNextDate(moveCurrentToAdd.getArrival(),1),Date.getNextDate(moveCurrentToAdd.getArrival(),1),moveBefore.to_id,moveBefore.to_id);
+                    movesRet.add (moveCurrentToAdd);
+                }
+                //Nulle Parte
+                movesRet.add(new Move(Date.getNextDate(moveCurrentToAdd.arrival,1), Date.getPreviousDate(moveAfter.depart, 1), Move.NULLE_PARTE, Move.NULLE_PARTE));
                 return movesRet;
             }
             return new ArrayList<Move>();

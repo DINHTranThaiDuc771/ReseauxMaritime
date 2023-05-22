@@ -12,7 +12,7 @@ public class TestCheckCoherent2
         m2 = new Move ("14/03/1977 00:00","15/03/1977 00:00",3,4);
         System.out.println (m1);
         System.out.println (m2);
-        System.out.println("------------------------");
+        System.out.println("------------Moves à ajouter------------");
 
         for (Move m :Move.checkCoherent2(m1,m2))
         {
@@ -23,7 +23,7 @@ public class TestCheckCoherent2
         m4 = new Move ("8/03/1977 00:00","15/03/1977 00:00",3,4);
         System.out.println (m3);
         System.out.println (m4);
-        System.out.println("------------------------");
+        System.out.println("------------Moves à ajouter------------");
         for (Move m :Move.checkCoherent2(m3,m4))
         {
             System.out.println(m);
@@ -33,7 +33,7 @@ public class TestCheckCoherent2
         m4 = new Move ("07/03/1977 00:00","15/03/1977 00:00",3,4);
         System.out.println (m3);
         System.out.println (m4);
-        System.out.println("------------------------");
+        System.out.println("------------Moves à ajouter------------");
 
         for (Move m :Move.checkCoherent2(m3,m4))
         {
@@ -45,7 +45,7 @@ public class TestCheckCoherent2
         m4 = new Move ("31/04/1977 00:00","15/05/1977 00:00",2,3);
         System.out.println (m3);
         System.out.println (m4);
-        System.out.println("------------------------");
+        System.out.println("------------Moves à ajouter------------");
 
         for (Move m :Move.checkCoherent2(m3,m4))
         {
