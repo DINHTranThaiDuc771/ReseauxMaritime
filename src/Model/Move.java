@@ -29,10 +29,14 @@ public class Move implements Comparable<Move>{
     @Override
     public String toString () {
         return
-        String.format("%20s", depart.toString()) +
-        String.format("%20s", arrival.toString())+
-        String.format("%8d" , from_id)+
-        String.format("%8d" , to_id);
+        depart.toString()+"\t" +
+        arrival.toString()+"\t" +
+        from_id         + "\t" +
+        to_id           + "\t";
+        // String.format("%20s", depart.toString()) +
+        // String.format("%20s", arrival.toString())+
+        // String.format("%8d" , from_id)+
+        // String.format("%8d" , to_id);
     }
     // Format days 01/03/1977 00:00
     public Date getDepart() {
