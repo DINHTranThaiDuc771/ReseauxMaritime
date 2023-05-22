@@ -323,7 +323,7 @@ public class Model {
         sorted.forEach(
             (key,value) -> {
                 try {
-                    FileWriter writer = new FileWriter("dataHistorique./nav"+key+".txt",true);
+                    FileWriter writer = new FileWriter("./dataHistorique/nav"+key+".txt",true);
                     writer.write("Navire: "+ key+"\n");
                     for (Move move : value) {
                         String line;
