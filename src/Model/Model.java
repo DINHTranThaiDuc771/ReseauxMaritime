@@ -327,10 +327,15 @@ public class Model {
                     writer.write("Navire: "+ key+"\n");
                     for (Move move : value) {
                         String line;
-                        line   = String.format("%6d",model.mapDateVsStep.get(move.getDepart()));
-                        line  += String.format("%6d",model.mapDateVsStep.get(move.getArrival()));
-                        line  += String.format("%8d",move.getFrom_id());
-                        line  += String.format("%8d",move.getTo_id());
+                        // line   = String.format("%6d",model.mapDateVsStep.get(move.getDepart()));
+                        // line  += String.format("%6d",model.mapDateVsStep.get(move.getArrival()));
+                        // line  += String.format("%8d",move.getFrom_id());
+                        // line  += String.format("%8d",move.getTo_id());
+                        line   = model.mapDateVsStep.get(move.getDepart()) + "\t";
+                        line  += model.mapDateVsStep.get(move.getArrival()) + "\t";
+                        line  += move.getFrom_id() + "\t";
+                        line  += move.getTo_id();
+  
                         line  += move.toString();
                         writer.write(line+"\n");
                     }
