@@ -336,7 +336,7 @@ public class Model {
                         line   = model.mapDateVsStep.get(move.getDepart()) + "\t";
                         line  += model.mapDateVsStep.get(move.getArrival()) + "\t";
                         line  += move.getFrom_id() + "\t";
-                        line  += move.getTo_id();
+                        line  += move.getTo_id() +"\t";
                         line  += move.toString();
                         writer.write(line+"\n");
                     }
