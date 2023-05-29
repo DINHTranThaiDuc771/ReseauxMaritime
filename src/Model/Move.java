@@ -62,17 +62,9 @@ public class Move implements Comparable<Move>{
             if (Date.between(moveBefore.arrival, moveAfter.depart) > Move.DURATION_BETWEEN_TWO_MOVE )
             {
                 List<Move> movesRet = new ArrayList<>();
-                // Add 5 moves 
-                Move moveCurrentToAdd = new Move (Date.getNextDate(moveBefore.arrival, 1),Date.getNextDate(moveBefore.arrival, 1),moveBefore.to_id,moveBefore.to_id);
-                movesRet.add (moveCurrentToAdd);
-                for (int cpt = 0; cpt < Move.NB_DAYS_IN_A_PORT - 1; cpt++)
-                {
-                    // stay in port moveBefore.to_id for 5 days : from 2/3 to 6/3
-                    moveCurrentToAdd = new Move (Date.getNextDate(moveCurrentToAdd.getArrival(),1),Date.getNextDate(moveCurrentToAdd.getArrival(),1),moveBefore.to_id,moveBefore.to_id);
-                    movesRet.add (moveCurrentToAdd);
-                }
+
                 //Nulle Parte
-                movesRet.add(new Move(Date.getNextDate(moveCurrentToAdd.arrival,1), Date.getPreviousDate(moveAfter.depart, 1), Move.NULLE_PARTE, Move.NULLE_PARTE));
+                movesRet.add(new Move(Date.getNextDate(moveBefore.arrival,Move.NB_DAYS_IN_A_PORT), Date.getPreviousDate(moveAfter.depart, 1), Move.NULLE_PARTE, Move.NULLE_PARTE));
                 return movesRet;
             }
             return new ArrayList<Move>();
@@ -87,16 +79,10 @@ public class Move implements Comparable<Move>{
             //Imagine if ecart =11 , between the 1/3 and 13/3
 
             //Add 5 moves to indicate that the navire stay at the same port in 5 days
-            Move moveCurrentToAdd = new Move(Date.getNextDate(moveBefore.getArrival(),1), Date.getNextDate(moveBefore.getArrival(),1), moveBefore.to_id, moveBefore.to_id); 
-            movesRet.add (moveCurrentToAdd);
-            for (int cpt = 0; cpt < 4; cpt++)
-            {
-                // stay in port moveBefore.to_id for 5 days : from 2/3 to 6/3
-                moveCurrentToAdd = new Move (Date.getNextDate(moveCurrentToAdd.getArrival(),1),Date.getNextDate(moveCurrentToAdd.getArrival(),1),moveCurrentToAdd.to_id,moveCurrentToAdd.to_id);
-                movesRet.add (moveCurrentToAdd);
-            }
+            Move moveCurrentToAdd;
+
             //Nulle part for 11-10 days : 7/3
-            Date datetmp = Date.getNextDate(moveCurrentToAdd.getArrival(),1);
+            Date datetmp = Date.getNextDate(moveBefore.getArrival(),Move.NB_DAYS_IN_A_PORT);
             moveCurrentToAdd = new Move (datetmp,Date.getNextDate(datetmp, ecart-11),Move.NULLE_PARTE,Move.NULLE_PARTE);
             movesRet.add(moveCurrentToAdd);
             //Add move that it moves from old port to the new : from 8/3 to 12/3
@@ -108,19 +94,10 @@ public class Move implements Comparable<Move>{
         }
         if (ecart <= 10 && ecart > 5)
         {
-            //Add 5 moves to say that the navire stay at the same port in 5 days
-            Move moveCurrentToAdd = new Move(Date.getNextDate(moveBefore.getArrival(),1), Date.getNextDate(moveBefore.getArrival(),1), moveBefore.to_id, moveBefore.to_id); 
-            movesRet.add (moveCurrentToAdd);
-            for (int cpt = 0; cpt < 4; cpt++)
-            {
-                // stay in port moveBefore.to_id for 5 days : from 2/3 to 6/3
-                moveCurrentToAdd = new Move (Date.getNextDate(moveCurrentToAdd.getArrival(),1),Date.getNextDate(moveCurrentToAdd.getArrival(),1),moveCurrentToAdd.to_id,moveCurrentToAdd.to_id);
-                movesRet.add (moveCurrentToAdd);
-            }
 
              //Add move that it moves from old port to the new
-            Date datetmp = Date.getNextDate(moveCurrentToAdd.getArrival(),1);
-            moveCurrentToAdd = new Move (datetmp,Date.getPreviousDate(moveAfter.getDepart(), 1),moveBefore.to_id,moveAfter.from_id);
+            Date datetmp = Date.getNextDate(moveBefore.getArrival(),Move.NB_DAYS_IN_A_PORT);
+            Move moveCurrentToAdd = new Move (datetmp,Date.getPreviousDate(moveAfter.getDepart(), 1),moveBefore.to_id,moveAfter.from_id);
             movesRet.add(moveCurrentToAdd);
             return movesRet;           
         }
