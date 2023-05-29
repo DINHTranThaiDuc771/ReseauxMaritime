@@ -23,7 +23,9 @@ public class Model {
     /*---------------------------------------------------------------------------------------- */
     /*-------------------------------------Geter----------------------------------------------- */
     /*---------------------------------------------------------------------------------------- */
-    
+    public HashMap<Navire, LinkedList<Move>> getMapNavireVsListmove() {
+        return mapNavireVsListmove;
+    }
     public ArrayList<Date> getLstStepVsDate() {
         return lstStepVsDate;
     }
@@ -335,7 +337,6 @@ public class Model {
                         line  += model.mapDateVsStep.get(move.getArrival()) + "\t";
                         line  += move.getFrom_id() + "\t";
                         line  += move.getTo_id();
-  
                         line  += move.toString();
                         writer.write(line+"\n");
                     }
