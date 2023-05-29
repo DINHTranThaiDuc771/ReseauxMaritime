@@ -108,8 +108,8 @@ public class HistoryGraph
             }
             if (currentPeriode <periode && currentPeriode >= periode - NB_OF_DAYS) valide = true;
         }
-        System.out.println("Periode :" + periode);
-        System.out.println("Current Periode :" + currentPeriode);
+        // System.out.println("Periode :" + periode);
+        // System.out.println("Current Periode :" + currentPeriode);
 
         return lstRet;
     }
@@ -190,7 +190,7 @@ public class HistoryGraph
         HistoryGraph historyGraph = new HistoryGraph(mapNavireVsListmove.get(navExample));
         System.out.println("Graph of Navire:" +navExample + " in 1977.csv");
         System.out.println (historyGraph);
-        for (Move m : historyGraph.generateNbMoves(17,2907, 369, new Date("22/9/1977"), new Date("17/11/1977")))
+        for (Move m : historyGraph.generateNbMoves(6,2907, 369, new Date("22/9/1977"), new Date("17/11/1977")))
         {
             System.out.println(m);
         }
