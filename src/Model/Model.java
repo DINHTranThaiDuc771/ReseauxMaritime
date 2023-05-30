@@ -125,7 +125,6 @@ public class Model {
     }
     public void coherentModel2()
     {
-        //TODO TEST METHOD
         for (Navire navire : mapNavireVsListmove.keySet())
         {
             LinkedList<Move> lstMoveNavireTraite = mapNavireVsListmove.get(navire); // L'Historique de navigation
@@ -294,7 +293,6 @@ public class Model {
         System.out.println("Finish sortMove");
         this.sortDate();
         System.out.println("Finish sortDate");
-        //TODO coherentModel2()
         this.coherentModel2();
         System.out.println("Finish coherent");
 
@@ -351,9 +349,7 @@ public class Model {
 
             }
         );
-        model.mapDateVsStep.forEach(
-            (key, value) -> System.out.println(key + " :" + value)
-        );
+
 
         
     }
