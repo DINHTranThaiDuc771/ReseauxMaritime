@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Move implements Comparable<Move>{
-    private final static int NULLE_PARTE = -3;
+    public final static int NULLE_PARTE = -3;
     private final static int AVERAGE_SEA_SHIPPING_DURATION = 45;
     private final static int DURATION_BETWEEN_TWO_MOVE     = 30;
     private static final int NB_DAYS_IN_A_PORT = 5; 
