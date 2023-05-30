@@ -2,8 +2,9 @@
 ./src/Model/Navire.java
 ./src/Model/Model.java
 ./src/Model/Date.java
+./src/Model/HistoryGraph.java
+
 ./src/Executable/DiviseCSVScanner.java
 ./src/Executable/WriteDGSFile.java
 ./src/Executable/WriteDGSFileVer2.java
-
 -d bin
