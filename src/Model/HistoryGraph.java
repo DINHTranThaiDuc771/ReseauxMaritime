@@ -53,14 +53,18 @@ public class HistoryGraph
 
         }
     }
-    public ArrayList<Move> generateNbMoves (int nbMove,Integer porteDeb,Integer porteFin, Date dateDeb,Date dateFin)
+    public ArrayList<Move> generateNbMoves (int nbMove,Integer porteDeb,Integer porteFin, Date dateDeb,Date dateFin) 
     {
         ArrayList<Move> lstRet = new ArrayList<>();
-        do 
+        try 
         {
-            lstRet = generateMoves(porteDeb, porteFin, dateDeb, dateFin);
+            do 
+            {
+                lstRet = generateMoves(porteDeb, porteFin, dateDeb, dateFin);
+            }
+            while (lstRet.size() != nbMove);
         }
-        while (lstRet.size() != nbMove);
+        catch (java.lang.NullPointerException e) {System.out.println("La porte " +porteDeb +" ou " +porteFin+" n'existe pas dans le graph");}
         return lstRet;
     }
     public ArrayList<Move> generateMoves (Integer porteDeb,Integer porteFin, Date dateDeb,Date dateFin)
