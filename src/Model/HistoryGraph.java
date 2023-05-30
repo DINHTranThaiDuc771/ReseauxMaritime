@@ -5,18 +5,19 @@ import java.util.*;
 
 public class HistoryGraph 
 {
-    private static final int UNKNOWN_VALUE = -3;
-    private static final int NB_OF_DAYS    = 10;
+    private static final int UNKNOWN_VALUE = Move.NULLE_PARTE;
+    private static final int NB_OF_DAYS    = 20;
     private ArrayList<Integer> lstPorte;
     private Map<Integer,Integer> mapPorteAndIndexOfMatrice;
     private Record[][]          matrixGraph;
     public HistoryGraph(List<Move> lstMoves)
     {
         HashSet<Integer> setPorte = new HashSet<>();
+        //setPorte does not add -3 (UNKNOWN_VALUE)
         for (Move m : lstMoves)
         {
-            if (m.getFrom_id() == -3) continue;
-            if (m.getTo_id()   == -3) continue;
+            if (m.getFrom_id() == UNKNOWN_VALUE) continue;
+            if (m.getTo_id()   == UNKNOWN_VALUE) continue;
 
             setPorte.add(m.getFrom_id());
             setPorte.add(m.getTo_id  ());
@@ -39,8 +40,8 @@ public class HistoryGraph
         }
         for (Move m : lstMoves)
         {
-            if (m.getFrom_id() == -3) continue;
-            if (m.getTo_id()   == -3) continue;
+            if (m.getFrom_id() == UNKNOWN_VALUE) continue;
+            if (m.getTo_id()   == UNKNOWN_VALUE) continue;
             int portA = mapPorteAndIndexOfMatrice.get(m.getFrom_id());
             int portB = mapPorteAndIndexOfMatrice.get(m.getTo_id());
             if ( portA ==  portB) continue;
@@ -69,7 +70,6 @@ public class HistoryGraph
     }
     public ArrayList<Move> generateMoves (Integer porteDeb,Integer porteFin, Date dateDeb,Date dateFin)
     {
-        //TODO list Moves
         ArrayList<Integer> chemin = generateCheminWithPorteFin(porteDeb, porteFin,Date.between(dateDeb, dateFin));
         ArrayList<Move>    lstMove= new ArrayList<>();
         //The final porte is  the porteFin
@@ -92,12 +92,13 @@ public class HistoryGraph
     private ArrayList<Integer> generateCheminWithPorteFin ( Integer porteDeb,Integer porteFin,long periode)
     {
         //An array including porteDeb
-        
+
         ArrayList<Integer> lstRet = new ArrayList<>();
         boolean valide = false;
         long currentPeriode = 0;
         while (!valide)
         {
+
             lstRet.clear();
             currentPeriode = 0;
             int currentPorte = porteDeb;
@@ -111,6 +112,7 @@ public class HistoryGraph
                 lstRet.add (currentPorte);
             }
             if (currentPeriode <periode && currentPeriode >= periode - NB_OF_DAYS) valide = true;
+
         }
         // System.out.println("Periode :" + periode);
         // System.out.println("Current Periode :" + currentPeriode);
@@ -133,26 +135,31 @@ public class HistoryGraph
     }
     private int nextPorte (Integer porteDeb)
     {
-        Record[] lstProbability = matrixGraph[mapPorteAndIndexOfMatrice.get(porteDeb)]; // time complexity is 1, better than O(n) of indexOf
-
-        int totalProb = 0;
         int porteRet = UNKNOWN_VALUE;
-        for (Record rec : lstProbability )
+
+        try
         {
-            totalProb += rec.nbOfMove;
-        }
-        Random random = new Random();
-        int randomNumber = random.nextInt(totalProb); // 0 <= the randomNumber < a
-        int sum = 0;
-        for (int i = 0; i< lstProbability.length ; i ++)
-        {
-            if (sum<= randomNumber && randomNumber < sum + lstProbability[i].nbOfMove)
+            Record[] lstProbability = matrixGraph[mapPorteAndIndexOfMatrice.get(porteDeb)]; // time complexity is 1, better than O(n) of indexOf
+
+            int totalProb = 0;
+            for (Record rec : lstProbability )
             {
-                porteRet =  lstPorte.get(i);
-                break;
+                totalProb += rec.nbOfMove;
             }
-            sum += lstProbability[i].nbOfMove;
+            Random random = new Random();
+            int randomNumber = random.nextInt(totalProb); // 0 <= the randomNumber < a
+            int sum = 0;
+            for (int i = 0; i< lstProbability.length ; i ++)
+            {
+                if (sum<= randomNumber && randomNumber < sum + lstProbability[i].nbOfMove)
+                {
+                    porteRet =  lstPorte.get(i);
+                    break;
+                }
+                sum += lstProbability[i].nbOfMove;
+            }
         }
+        catch (java.lang.NullPointerException e) {System.out.println("La porte " +porteDeb +" n'existe pas dans le graph");}
         return porteRet;
     }
     @Override
@@ -194,7 +201,7 @@ public class HistoryGraph
         HistoryGraph historyGraph = new HistoryGraph(mapNavireVsListmove.get(navExample));
         System.out.println("Graph of Navire:" +navExample + " in 1977.csv");
         System.out.println (historyGraph);
-        for (Move m : historyGraph.generateNbMoves(6,2907, 369, new Date("22/9/1977"), new Date("17/11/1977")))
+        for (Move m : historyGraph.generateMoves(2907, 369, new Date("22/9/1977"), new Date("17/11/1977")))
         {
             System.out.println(m);
         }
