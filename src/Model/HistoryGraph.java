@@ -6,7 +6,8 @@ import java.util.*;
 public class HistoryGraph 
 {
     private static final int UNKNOWN_VALUE = Move.NULLE_PARTE;
-    private static final int NB_OF_DAYS    = 20;
+    private static final int NB_OF_DAYS    = 5;
+    private static final long NB_MAX_PROBABILITY = 5000000;
     private ArrayList<Integer> lstPorte;
     private Map<Integer,Integer> mapPorteAndIndexOfMatrice;
     private Record[][]          matrixGraph;
@@ -34,7 +35,7 @@ public class HistoryGraph
         }
         int indexMatrix = 0;
         mapPorteAndIndexOfMatrice = new HashMap<Integer, Integer>();
-        for (Integer porte : lstPorte)
+        for (int porte : lstPorte)
         {
             mapPorteAndIndexOfMatrice.put(porte,indexMatrix++);
         }
@@ -51,10 +52,10 @@ public class HistoryGraph
 
             matrixGraph[portB][portA].nbOfMove ++;
             matrixGraph[portB][portA].nbOfDay += Date.between(m.getDepart(), m.getArrival());
-
         }
+
     }
-    public ArrayList<Move> generateNbMoves (int nbMove,Integer porteDeb,Integer porteFin, Date dateDeb,Date dateFin) 
+    public ArrayList<Move> generateNbMoves (int nbMove,int porteDeb,int porteFin, Date dateDeb,Date dateFin) 
     {
         ArrayList<Move> lstRet = new ArrayList<>();
         try 
@@ -68,7 +69,7 @@ public class HistoryGraph
         catch (java.lang.NullPointerException e) {System.out.println("La porte " +porteDeb +" ou " +porteFin+" n'existe pas dans le graph");}
         return lstRet;
     }
-    public ArrayList<Move> generateMoves (Integer porteDeb,Integer porteFin, Date dateDeb,Date dateFin)
+    public ArrayList<Move> generateMoves (int porteDeb,int porteFin, Date dateDeb,Date dateFin)
     {
         ArrayList<Integer> chemin = generateCheminWithPorteFin(porteDeb, porteFin,Date.between(dateDeb, dateFin));
         ArrayList<Move>    lstMove= new ArrayList<>();
@@ -84,42 +85,55 @@ public class HistoryGraph
             averageDuration = matrixGraph[mapPorteAndIndexOfMatrice.get(portA)][mapPorteAndIndexOfMatrice.get(portB)].getAverageDuration();
             move = new Move (currentDate , Date.getNextDate(currentDate, averageDuration),portA,portB);
             lstMove.add(move);
-            currentDate = Date.getNextDate(currentDate, averageDuration);
+            currentDate = Date.getNextDate(currentDate, averageDuration+1);// averageDuration +1 because the navire only do a movement in a day
         }
 
         return lstMove;
     }
-    private ArrayList<Integer> generateCheminWithPorteFin ( Integer porteDeb,Integer porteFin,long periode)
+    private ArrayList<Integer> generateCheminWithPorteFin ( int porteDeb,int porteFin,long periode)
     {
         //An array including porteDeb
 
         ArrayList<Integer> lstRet = new ArrayList<>();
         boolean valide = false;
+        int nbProbability = 0;
         long currentPeriode = 0;
         while (!valide)
         {
 
             lstRet.clear();
+            lstRet.add (porteDeb);
             currentPeriode = 0;
-            int currentPorte = porteDeb;
-            lstRet.add (currentPorte);
-
-            while (currentPorte != porteFin)
+            int currentPorte=porteDeb;
+            if (porteDeb == porteFin)
+            {
+                currentPorte = nextPorte(porteDeb);
+                lstRet.add(currentPorte);
+            }
+            while (currentPorte != porteFin || currentPeriode < periode - NB_OF_DAYS)
             {
                 int porteNext = nextPorte (currentPorte);
+                if (currentPeriode >= periode) break;
                 currentPeriode += matrixGraph[mapPorteAndIndexOfMatrice.get(currentPorte)][mapPorteAndIndexOfMatrice.get(porteNext)].getAverageDuration();
+                currentPeriode++;//TODO explains more
                 currentPorte = porteNext;
                 lstRet.add (currentPorte);
             }
-            if (currentPeriode <periode && currentPeriode >= periode - NB_OF_DAYS) valide = true;
-
+            if (nbProbability < HistoryGraph.NB_MAX_PROBABILITY)
+            {
+                valide = currentPeriode <periode && currentPeriode >= periode - NB_OF_DAYS;
+            }
+            if (nbProbability >= HistoryGraph.NB_MAX_PROBABILITY) 
+            {
+                System.out.println (this);
+                valide = true;
+            }
+            nbProbability ++;
         }
-        // System.out.println("Periode :" + periode);
-        // System.out.println("Current Periode :" + currentPeriode);
 
         return lstRet;
     }
-    private ArrayList<Integer> generateChemin (int nbOfStep, Integer porteDeb)
+    private ArrayList<Integer> generateChemin (int nbOfStep, int porteDeb)
     {
         // generateChemin (a,b) will return an array of a elements INCLUDING porte b
         ArrayList<Integer> lstRet = new ArrayList<>(nbOfStep);
@@ -133,7 +147,7 @@ public class HistoryGraph
         }
         return lstRet;
     }
-    private int nextPorte (Integer porteDeb)
+    private int nextPorte (int porteDeb)
     {
         int porteRet = UNKNOWN_VALUE;
 
@@ -197,16 +211,27 @@ public class HistoryGraph
         HashMap<Navire,LinkedList<Move>> mapNavireVsListmove;
         mapNavireVsListmove = model.getMapNavireVsListmove();
         ArrayList<Navire> lstNavire = new ArrayList<>(mapNavireVsListmove.keySet());
-        Navire navExample = lstNavire.get(0);
+        Collections.sort(lstNavire);
+        Navire navExample = null;
+
+        for (Navire nav : lstNavire)
+        {
+            if (nav.getId() == 2102)
+            {
+                navExample = nav;
+                break;
+            }
+        }
         HistoryGraph historyGraph = new HistoryGraph(mapNavireVsListmove.get(navExample));
         System.out.println("Graph of Navire:" +navExample + " in 1977.csv");
         System.out.println (historyGraph);
-        for (Move m : historyGraph.generateMoves(2907, 369, new Date("22/9/1977"), new Date("17/11/1977")))
+        for (Move m : historyGraph.generateMoves(2151, 2151, new Date("2/10/1977"), new Date("26/11/1977")))
         {
             System.out.println(m);
         }
     }
     class Record {
+        
         int nbOfMove;
         int nbOfDay;
         int averageDuration;
