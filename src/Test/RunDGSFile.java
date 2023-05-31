@@ -1,8 +1,6 @@
 package Test;
 
 import java.io.IOException;
-import java.util.Scanner;
-
 import org.graphstream.graph.*;
 import org.graphstream.graph.implementations.*;
 import org.graphstream.stream.file.FileSource;

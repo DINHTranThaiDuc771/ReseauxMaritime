@@ -2,6 +2,9 @@ package Model;
 
 public class Navire implements Comparable<Navire>{
     private int id;
+    public int getId() {
+        return id;
+    }
     public Navire (int id) {
         this.id = id;
     }
