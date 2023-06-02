@@ -369,7 +369,7 @@ public class Model {
         this.coherentModel2();
         System.out.println("Finish coherent2");
 
-        // this.coherentModel3();
+        this.coherentModel3();
         System.out.println("Finish coherent3");
 
     }

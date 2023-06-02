@@ -7,12 +7,16 @@ public class HistoryGraph
 {
     private static final int UNKNOWN_VALUE = Move.NULLE_PARTE;
     private static final int NB_OF_DAYS    = 5;
-    private static final long NB_MAX_PROBABILITY = 5000000;
+    private static final long NB_MAX_PROBABILITY = 10000;
     private ArrayList<Integer> lstPorte;
     private Map<Integer,Integer> mapPorteAndIndexOfMatrice;
+    private HashSet<Integer> listDeadEnd;
     private Record[][]          matrixGraph;
     public HistoryGraph(List<Move> lstMoves)
     {
+        this.listDeadEnd = new HashSet<>();
+
+
         HashSet<Integer> setPorte = new HashSet<>();
         //setPorte does not add -3 (UNKNOWN_VALUE)
         for (Move m : lstMoves)
@@ -43,15 +47,13 @@ public class HistoryGraph
         {
             if (m.getFrom_id() == UNKNOWN_VALUE) continue;
             if (m.getTo_id()   == UNKNOWN_VALUE) continue;
-            int portA = mapPorteAndIndexOfMatrice.get(m.getFrom_id());
-            int portB = mapPorteAndIndexOfMatrice.get(m.getTo_id());
-            if ( portA ==  portB) continue;
+            int from = mapPorteAndIndexOfMatrice.get(m.getFrom_id());
+            int to = mapPorteAndIndexOfMatrice.get(m.getTo_id());
+            if ( from ==  to) continue;
 
-            matrixGraph[portA][portB].nbOfMove ++;
-            matrixGraph[portA][portB].nbOfDay += Date.between(m.getDepart(), m.getArrival());
+            matrixGraph[from][to].nbOfMove ++;
+            matrixGraph[from][to].nbOfDay += Date.between(m.getDepart(), m.getArrival());
 
-            matrixGraph[portB][portA].nbOfMove ++;
-            matrixGraph[portB][portA].nbOfDay += Date.between(m.getDepart(), m.getArrival());
         }
 
     }
@@ -126,6 +128,7 @@ public class HistoryGraph
             if (nbProbability >= HistoryGraph.NB_MAX_PROBABILITY) 
             {
                 System.out.println (this);
+                System.out.println(lstRet);
                 valide = true;
             }
             nbProbability ++;
@@ -159,6 +162,11 @@ public class HistoryGraph
             for (Record rec : lstProbability )
             {
                 totalProb += rec.nbOfMove;
+            }
+            if (totalProb == 0) 
+            {
+                listDeadEnd.add(porteDeb);
+                return porteDeb;
             }
             Random random = new Random();
             int randomNumber = random.nextInt(totalProb); // 0 <= the randomNumber < a
