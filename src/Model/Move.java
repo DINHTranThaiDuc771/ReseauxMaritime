@@ -29,10 +29,10 @@ public class Move implements Comparable<Move>{
     @Override
     public String toString () {
         return
-        depart.toString()+"\t" +
-        arrival.toString()+"\t" +
-        from_id         + "\t" +
-        to_id           + "\t";
+        depart.toString()+";" +
+        arrival.toString()+";" +
+        from_id         + ";" +
+        to_id           + ";";
         // String.format("%20s", depart.toString()) +
         // String.format("%20s", arrival.toString())+
         // String.format("%8d" , from_id)+
@@ -86,9 +86,9 @@ public class Move implements Comparable<Move>{
             moveCurrentToAdd = new Move (datetmp,Date.getNextDate(datetmp, ecart-11),Move.NULLE_PARTE,Move.NULLE_PARTE);
             movesRet.add(moveCurrentToAdd);
             //Add move that it moves from old port to the new : from 8/3 to 12/3
-            datetmp = Date.getNextDate(moveCurrentToAdd.getArrival(),1);
-            moveCurrentToAdd = new Move (datetmp,Date.getPreviousDate(moveAfter.getDepart(), 1),moveBefore.to_id,moveAfter.from_id);
-            movesRet.add(moveCurrentToAdd);
+            // datetmp = Date.getNextDate(moveCurrentToAdd.getArrival(),1);
+            // moveCurrentToAdd = new Move (datetmp,Date.getPreviousDate(moveAfter.getDepart(), 1),moveBefore.to_id,moveAfter.from_id);
+            // movesRet.add(moveCurrentToAdd);
             return movesRet;
 
         }

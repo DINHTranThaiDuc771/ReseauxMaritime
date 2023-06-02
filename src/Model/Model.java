@@ -369,7 +369,7 @@ public class Model {
         this.coherentModel2();
         System.out.println("Finish coherent2");
 
-        this.coherentModel3();
+        // this.coherentModel3();
         System.out.println("Finish coherent3");
 
     }
@@ -407,10 +407,10 @@ public class Model {
                         // line  += String.format("%6d",model.mapDateVsStep.get(move.getArrival()));
                         // line  += String.format("%8d",move.getFrom_id());
                         // line  += String.format("%8d",move.getTo_id());
-                        line   = model.mapDateVsStep.get(move.getDepart()) + "\t";
-                        line  += model.mapDateVsStep.get(move.getArrival()) + "\t";
-                        line  += move.getFrom_id() + "\t";
-                        line  += move.getTo_id() +"\t";
+                        line   = model.mapDateVsStep.get(move.getDepart()) + ";";
+                        line  += model.mapDateVsStep.get(move.getArrival()) + ";";
+                        line  += move.getFrom_id() + ";";
+                        line  += move.getTo_id() +";";
                         line  += move.toString();
                         writer.write(line+"\n");
                     }
