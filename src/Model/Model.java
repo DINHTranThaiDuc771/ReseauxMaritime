@@ -325,6 +325,8 @@ public class Model {
         String              fichier     = path;
         FileInputStream     inputStream = new FileInputStream(fichier);
         Scanner             scanner     = new Scanner(inputStream,"UTF-8");
+        HashSet<Date> setDate = new HashSet<Date>();
+
         while (scanner.hasNextLine()){
             String line = scanner.nextLine();
             String dataOfLine[] = line.split(";");
@@ -345,6 +347,8 @@ public class Model {
                 this.mapNavireVsListmove   .get(navireTraite).add(moveTraite);
                 Date dateDepart = new Date(dataOfLine[4]);
                 Date dateArrival= new Date(dataOfLine[5]);
+                setDate.add(dateArrival);
+                setDate.add(dateDepart);
                 if (!(this.mapNavireVsListDate.get(navireTraite).contains(dateDepart)))this.mapNavireVsListDate.get(navireTraite).add(dateDepart);
                 if (!(this.mapNavireVsListDate.get(navireTraite).contains(dateArrival)))this.mapNavireVsListDate.get(navireTraite).add(dateArrival);
 
@@ -355,6 +359,8 @@ public class Model {
                 this.mapNavireVsListmove.get(navireTraite).add(moveTraite);
                 Date dateDepart = new Date(dataOfLine[4]);
                 Date dateArrival= new Date(dataOfLine[5]);
+                setDate.add(dateArrival);
+                setDate.add(dateDepart);
                 if (!(this.mapNavireVsListDate.get(navireTraite).contains(dateDepart)))this.mapNavireVsListDate.get(navireTraite).add(dateDepart);
                 if (!(this.mapNavireVsListDate.get(navireTraite).contains(dateArrival)))this.mapNavireVsListDate.get(navireTraite).add(dateArrival);
 
@@ -371,6 +377,9 @@ public class Model {
 
         this.coherentModel3();
         System.out.println("Finish coherent3");
+        this.lstStepVsDate = new ArrayList<>(setDate);
+        Collections.sort(lstStepVsDate);
+        System.out.println("Finish charger listDate");
 
     }
 
