@@ -11,6 +11,7 @@ public class WriteDGSSommetPort {
         File[] files = folder.listFiles();
         File[] dgsFiles = folderNavHistorique.listFiles();
         if (dgsFiles != null) {
+            System.out.println("Reconstruct");
             for (File file : dgsFiles) {
                 if (file.isFile()) {
                     file.delete();
@@ -21,7 +22,7 @@ public class WriteDGSSommetPort {
             System.out.println("No files found in the folder.");
             return;
         }
-
+        System.out.println("Write");
         for (File file : files) {
             if (!file.isFile()) {
                 continue;

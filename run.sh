@@ -5,7 +5,7 @@ javac -encoding utf8 "@compile.list"
 if [ -z "$1" ]; then
     echo "Missing argument. Usage: $0 [file path]"
     echo "Read ./testData/testMoves.csv by default..."
-    ./getDate.sh ./testData/testMoves.csv
+    # ./getDate.sh ./testData/testMoves.csv
     if [ -d "./dataHistorique/" ]; then
         echo "Reconstruct..."
         cd "./dataHistorique"
@@ -23,7 +23,7 @@ if [ ! -f "$1" ]; then
     echo "Error: File not found: $1"
     exit 1
 fi
-./getDate.sh "$1"
+# ./getDate.sh "$1"
 if [ -d "./dataHistorique/" ]; then
     echo "Reconstruct..."
     cd "./dataHistorique"

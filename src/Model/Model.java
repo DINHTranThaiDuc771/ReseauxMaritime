@@ -374,9 +374,9 @@ public class Model {
         System.out.println("Finish sortDate");
         this.coherentModel2();
         System.out.println("Finish coherent2");
-
-        this.coherentModel3();
-        System.out.println("Finish coherent3");
+        //TODO call coherent3()
+        // this.coherentModel3();
+        // System.out.println("Finish coherent3");
         this.lstStepVsDate = new ArrayList<>(setDate);
         Collections.sort(lstStepVsDate);
         System.out.println("Finish charger listDate");

@@ -2,10 +2,7 @@ package Executable;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 import Model.Date;
 import Model.Model;
@@ -16,14 +13,16 @@ import Model.Navire;
  */
 public class WriteDGSFileSommetNavire {
     public static void main(String[] args) throws IOException {
-        FileWriter writer = new FileWriter("graphDynamic.dgs", false);
+        Scanner scanner = new Scanner (System.in);
+        System.out.println("Entrer année : ");
+        int annee = scanner.nextInt();
+        FileWriter writer = new FileWriter("./dgs/annee/"+annee+".dgs", false);
         writer.write(""); //Delete content of the file
         writer.close();
-        writer = new FileWriter("graphDynamic.dgs", true);
+        writer = new FileWriter("./dgs/annee/"+annee+".dgs", true);
         // FileWriter writerTest = new FileWriter("test.txt", true);
         Model model = new Model();
-        model.chargerModel("./dataUniq/1977.csv");
-        model.chargerListDateVsStep("./tmp/dates_vs_step");
+        model.chargerModel("./testData/allMoves.csv");
         // Write 2 first line
         System.out.println("Writing dgs file");
         writer.write("DGS004\n");
@@ -35,6 +34,8 @@ public class WriteDGSFileSommetNavire {
 
         int step = 0;
         for (Date date : lstDate) {
+            if (date.year() < annee) continue;
+            if (date.year() > annee) break;
             // writerTest.write("st " + (step++) + "\n");
             writer.write("st " + (step++) + "\n");
             writer.write("#Date " + date + "\n");
