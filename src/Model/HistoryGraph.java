@@ -7,7 +7,7 @@ public class HistoryGraph
 {
     private static final int UNKNOWN_VALUE = Move.NULLE_PARTE;
     private static final int NB_OF_DAYS    = 5;
-    private static final long NB_MAX_PROBABILITY = 10000;
+    private static final long NB_MAX_PROBABILITY = 100000;
     private ArrayList<Integer> lstPorte;
     private Map<Integer,Integer> mapPorteAndIndexOfMatrice;
     private HashSet<Integer> listDeadEnd;
@@ -100,6 +100,7 @@ public class HistoryGraph
         boolean valide = false;
         int nbProbability = 0;
         long currentPeriode = 0;
+
         while (!valide)
         {
 
@@ -115,6 +116,13 @@ public class HistoryGraph
             while (currentPorte != porteFin || currentPeriode < periode - NB_OF_DAYS)
             {
                 int porteNext = nextPorte (currentPorte);
+                //Check if it is a deadEnd
+                if (listDeadEnd.contains(currentPorte))
+                {
+                    System.out.println("DeadEnd "+currentPorte);
+                    System.out.println(lstRet);
+                    return lstRet;
+                }
                 if (currentPeriode >= periode) break;
                 currentPeriode += matrixGraph[mapPorteAndIndexOfMatrice.get(currentPorte)][mapPorteAndIndexOfMatrice.get(porteNext)].getAverageDuration();
                 currentPeriode++;//TODO explains more
@@ -128,12 +136,11 @@ public class HistoryGraph
             if (nbProbability >= HistoryGraph.NB_MAX_PROBABILITY) 
             {
                 System.out.println (this);
-                System.out.println(lstRet);
                 valide = true;
             }
             nbProbability ++;
         }
-
+        System.out.println(lstRet);
         return lstRet;
     }
     private ArrayList<Integer> generateChemin (int nbOfStep, int porteDeb)
@@ -165,7 +172,7 @@ public class HistoryGraph
             }
             if (totalProb == 0) 
             {
-                listDeadEnd.add(porteDeb);
+                this.listDeadEnd.add(porteDeb);
                 return porteDeb;
             }
             Random random = new Random();
