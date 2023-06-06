@@ -30,7 +30,7 @@ public class TestCheckCoherent2
         }
         System.out.println("Ecart <= 5");
         m3 = new Move ("01/03/1977 00:00","01/03/1977 00:00",1,2);
-        m4 = new Move ("07/03/1977 00:00","15/03/1977 00:00",3,4);
+        m4 = new Move ("07/04/1977 00:00","15/04/1977 00:00",3,4);
         System.out.println (m3);
         System.out.println (m4);
         System.out.println("------------Moves à ajouter------------");
