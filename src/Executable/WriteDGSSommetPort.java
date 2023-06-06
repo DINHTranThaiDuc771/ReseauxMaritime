@@ -70,7 +70,7 @@ public class WriteDGSSommetPort {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 String dataOfLine[] = line.split(";");
-                if (dataOfLine.length == 1)
+                if (dataOfLine.length == 1)//Ignore lines that is not a data Line
                     continue;
                 int from, to;
                 from = Integer.parseInt(dataOfLine[2]);
@@ -91,6 +91,8 @@ public class WriteDGSSommetPort {
                 writer.write("ae " + from + "-" + to + " " + from + " > " + to + "\n");
             }
             writer.close();
+            scanner.close();
+
         }
         System.out.println("Finish");
     }

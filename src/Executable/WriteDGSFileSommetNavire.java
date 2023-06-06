@@ -14,7 +14,7 @@ import Model.Navire;
 /*
  * Run getDate.sh before execute this
  */
-public class WriteDGSFile {
+public class WriteDGSFileSommetNavire {
     public static void main(String[] args) throws IOException {
         FileWriter writer = new FileWriter("graphDynamic.dgs", false);
         writer.write(""); //Delete content of the file

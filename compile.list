@@ -6,5 +6,4 @@
 
 ./src/Executable/DiviseCSVScanner.java
 ./src/Executable/WriteDGSFile.java
-./src/Executable/WriteDGSFileVer2.java
 -d bin

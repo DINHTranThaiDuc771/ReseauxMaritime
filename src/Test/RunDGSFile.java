@@ -14,7 +14,7 @@ public class RunDGSFile {
 		graph.display();
 		FileSource source = new FileSourceDGS();
 		source.addSink( graph );
-		source.begin("./dgs/navHistorique/nav102356.dgs");
+		source.begin("./dgs/annee/1989.dgs");
 		
 		while (source.nextStep())
 		{
