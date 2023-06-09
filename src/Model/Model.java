@@ -379,6 +379,14 @@ public class Model {
         // System.out.println("Finish coherent3");
         this.lstStepVsDate = new ArrayList<>(setDate);
         Collections.sort(lstStepVsDate);
+        int cpt = 1;
+        for (Date date : lstStepVsDate)
+        {
+            this.mapDateVsStep.put(date, cpt);
+            cpt ++;
+        }
+        this.mapDateVsStep = new TreeMap<Date,Integer>(mapDateVsStep);
+
         System.out.println("Finish charger listDate");
 
     }

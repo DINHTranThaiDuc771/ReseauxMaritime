@@ -1,6 +1,6 @@
 #!/bin/bash
 
-folder="./data"
+folder="./testdata"
 
 for file in "$folder"/*; do
     filename=$(basename "$file")

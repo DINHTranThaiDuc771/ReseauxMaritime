@@ -16,6 +16,7 @@ public class WriteDGSFileSommetNavire {
         Scanner scanner = new Scanner (System.in);
         System.out.println("Entrer année : ");
         int annee = scanner.nextInt();
+        scanner.close();
         FileWriter writer = new FileWriter("./dgs/annee/"+annee+".dgs", false);
         writer.write(""); //Delete content of the file
         writer.close();
