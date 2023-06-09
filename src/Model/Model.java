@@ -409,7 +409,11 @@ public class Model {
         Model model = new Model();
         if (args.length > 0 ) model.chargerModel(args[0]);
         else model.chargerModel("./dataUniq/1977.csv");
-        model.chargerListDateVsStep("./tmp/dates_vs_step");
+        System.out.println("Voulez-vous remplir le trou de données? Entrez \"O\" pour Oui et l'autre pour NON");
+        Scanner  scanner = new Scanner (System.in);
+        String remplir = scanner.nextLine();
+        if (remplir.equals("O")) model.coherentModel3();
+        scanner.close();
         TreeMap<Navire, LinkedList<Move>> sorted            = new TreeMap<>(model.mapNavireVsListmove); // sort hashMap
         System.out.println("Writing files");
 
