@@ -14,8 +14,12 @@ import Model.Navire;
 public class WriteDGSFileSommetNavire {
     public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner (System.in);
+        System.out.println("Entrer file CSV à charger : ");
+        String path = scanner.nextLine();
         System.out.println("Entrer année : ");
         int annee = scanner.nextInt();
+
+        
         scanner.close();
         FileWriter writer = new FileWriter("./dgs/annee/"+annee+".dgs", false);
         writer.write(""); //Delete content of the file
@@ -23,7 +27,7 @@ public class WriteDGSFileSommetNavire {
         writer = new FileWriter("./dgs/annee/"+annee+".dgs", true);
         // FileWriter writerTest = new FileWriter("test.txt", true);
         Model model = new Model();
-        model.chargerModel("./testData/allMoves.csv");
+        model.chargerModel(path);
         // Write 2 first line
         System.out.println("Writing dgs file");
         writer.write("DGS004\n");
