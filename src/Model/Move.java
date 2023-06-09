@@ -75,6 +75,16 @@ public class Move implements Comparable<Move> {
                                     Move.NULLE_PARTE));
             return movesRet;
         }
+        if (moveBefore.getTo_id() != moveAfter.getFrom_id())
+        {
+            movesRet = new ArrayList<>();
+            // Nulle Parte
+            movesRet.add(new Move(  Date.getNextDate(moveBefore.arrival, Move.NB_DAYS_IN_A_PORT),
+                                    Date.getPreviousDate(moveAfter.depart, 1), 
+                                    Move.NULLE_PARTE, 
+                                    Move.NULLE_PARTE));
+            return movesRet;
+        }
         return movesRet;
 
     }
