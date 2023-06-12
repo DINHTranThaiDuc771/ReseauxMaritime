@@ -13,21 +13,24 @@ import Model.Navire;
  */
 public class WriteDGSFileSommetNavire {
     public static void main(String[] args) throws IOException {
-        Scanner scanner = new Scanner (System.in);
+        Scanner scanner = new Scanner(System.in);
         System.out.println("Entrer file CSV à charger : ");
         String path = scanner.nextLine();
+        System.out.println("Voulez-vous remplir le trou de données? Entrez \"O\" pour Oui et l'autre pour NON");
+        String remplir = scanner.nextLine();
         System.out.println("Entrer année : ");
         int annee = scanner.nextInt();
 
-        
         scanner.close();
-        FileWriter writer = new FileWriter("./dgs/annee/"+annee+".dgs", false);
-        writer.write(""); //Delete content of the file
+        FileWriter writer = new FileWriter("./dgs/annee/" + annee + ".dgs", false);
+        writer.write(""); // Delete content of the file
         writer.close();
-        writer = new FileWriter("./dgs/annee/"+annee+".dgs", true);
+        writer = new FileWriter("./dgs/annee/" + annee + ".dgs", true);
         // FileWriter writerTest = new FileWriter("test.txt", true);
         Model model = new Model();
         model.chargerModel(path);
+        if (remplir.equals("O"))
+            model.coherentModel3();
         // Write 2 first line
         System.out.println("Writing dgs file");
         writer.write("DGS004\n");
@@ -39,8 +42,10 @@ public class WriteDGSFileSommetNavire {
 
         int step = 0;
         for (Date date : lstDate) {
-            if (date.year() < annee) continue;
-            if (date.year() > annee) break;
+            if (date.year() < annee)
+                continue;
+            if (date.year() > annee)
+                break;
             // writerTest.write("st " + (step++) + "\n");
             writer.write("st " + (step++) + "\n");
             writer.write("#Date " + date + "\n");
@@ -54,7 +59,7 @@ public class WriteDGSFileSommetNavire {
                 ArrayList<Navire> lstNavireDePorteTraite = new ArrayList<Navire>(mapPorteAvecNavire.get(port));
                 if (port == -2) // Apres la date
                     continue;
-                if (port == -1) //Avant la date
+                if (port == -1) // Avant la date
                     continue;
                 if (port == 0) // En route
                     continue;
@@ -76,7 +81,7 @@ public class WriteDGSFileSommetNavire {
                 if (setEdge.remove(edge)) {
                     String idI = "n" + edge.getNavA().toString();
                     String idJ = "n" + edge.getNavB().toString();
-                    //TODO ce idI idJ present="false"
+                    // TODO ce idI idJ present="false"
                     writer.write("de " + idI + idJ + "\n");
                 }
             }
@@ -98,32 +103,30 @@ public class WriteDGSFileSommetNavire {
                     }
                     continue;
                 }
-                //TODO change color depending on the port
+                // TODO change color depending on the port
                 int port = mapNavireVsPorte.get(nav)[0];
                 if (setNavire.add(nav)) {
                     // writer.write("an " + "n" + nav +" x="+port+" "+"y="+port+" "+ "\n");
-                    writer.write("an " + "n" + nav+" label="+nav+" \n");
+                    writer.write("an " + "n" + nav + " label=" + nav + " \n");
                     continue;
                 }
-                if ( ! (setNavire.add(nav)) ) {
+                if (!(setNavire.add(nav))) {
                     // writer.write("cn " + "n" + nav +" x="+port+" "+"y="+port+" "+ "\n");
-                    if (port == -3)
-                    {
-                        //BLUE
-                        writer.write("cn "+"n"+nav+" ui.style=\"fill-color: rgb(0,100,255);\"\n");
+                    if (port == -3) {
+                        // BLUE
+                        writer.write("cn " + "n" + nav + " ui.style=\"fill-color: rgb(0,100,255);\"\n");
                         continue;
                     }
-                    if (port == 0)
-                    {
-                        //Green
-                        writer.write("cn "+"n"+nav+" ui.style=\"fill-color: rgb(124,252,0);\"\n");
+                    if (port == 0) {
+                        // Green
+                        writer.write("cn " + "n" + nav + " ui.style=\"fill-color: rgb(124,252,0);\"\n");
                         continue;
                     }
-                    //BLACK, back to normal
-                    writer.write("cn "+"n"+nav+" ui.style=\"fill-color: rgb(0,0,0);\"\n");
+                    // BLACK, back to normal
+                    writer.write("cn " + "n" + nav + " ui.style=\"fill-color: rgb(0,0,0);\"\n");
 
                     continue;
-                }                
+                }
             }
             /*-------------------------------------- */
             /*----------- add Edge-----------------*/
