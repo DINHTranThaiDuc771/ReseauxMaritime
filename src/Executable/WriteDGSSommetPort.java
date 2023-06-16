@@ -1,11 +1,25 @@
 package Executable;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.*;
 
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
 public class WriteDGSSommetPort {
-    public static void main(String[] args) throws IOException {
-        File folder = new File("./dataHistorique");
+    private static String pathDataHistorique;
+
+    public static void main(String[] args)  {
+        createAndShowGUI();
+
+    }
+
+    public static void generateDgsFileSommetPort() throws IOException {
+        File folder = new File(pathDataHistorique);
         File folderNavHistorique = new File("./dgs/navHistorique");
 
         File[] files = folder.listFiles();
@@ -71,7 +85,7 @@ public class WriteDGSSommetPort {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 String dataOfLine[] = line.split(";");
-                if (dataOfLine.length == 1)//Ignore lines that is not a data Line
+                if (dataOfLine.length == 1)// Ignore lines that is not a data Line
                     continue;
                 int from, to;
                 from = Integer.parseInt(dataOfLine[2]);
@@ -83,7 +97,7 @@ public class WriteDGSSommetPort {
                 setEdge.add(new EdgePorte(from, to));
             }
             for (int porte : setPorte) {
-                writer.write("an " + porte +" label="+porte+ "\n");
+                writer.write("an " + porte + " label=" + porte + "\n");
             }
             for (EdgePorte edge : setEdge) {
                 int from, to;
@@ -98,6 +112,44 @@ public class WriteDGSSommetPort {
         System.out.println("Finish");
     }
 
+    private static void createAndShowGUI() {
+        // Create the frame
+        JFrame frame = new JFrame("Folder Chooser Example");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Create a button to open the folder chooser dialog
+        JButton button = new JButton("Open Folder Chooser");
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser chooser = new JFileChooser();
+                chooser.setDialogTitle("Choose a folder");
+                chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+                // Set the initial directory to the current folder
+                File currentDir = new File(".");
+                chooser.setCurrentDirectory(currentDir);
+
+                int returnValue = chooser.showOpenDialog(null);
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    File selectedFolder = chooser.getSelectedFile();
+                    System.out.println("Selected Folder: " + selectedFolder.getAbsolutePath());
+                    WriteDGSSommetPort.pathDataHistorique = selectedFolder.getAbsolutePath();
+                    frame.dispose();
+                    try {
+                        generateDgsFileSommetPort();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        // Add the button to the frame
+        frame.getContentPane().add(button);
+        frame.pack();
+        frame.setVisible(true);
+
+    }
 }
 
 class EdgePorte {
