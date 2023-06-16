@@ -56,7 +56,7 @@ public class WriteDGSSommetPort {
             writer.write("DGS004\n");
             writer.write("null 0 0\n");
 
-            FileInputStream inputStream = new FileInputStream("./dataHistorique/" + filename);
+            FileInputStream inputStream = new FileInputStream(pathDataHistorique+"/" + filename);
             Scanner scanner = new Scanner(inputStream, "UTF-8");
             /*
              * Navire: 46
